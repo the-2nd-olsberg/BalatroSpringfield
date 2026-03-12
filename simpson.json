@@ -1,0 +1,11 @@
+{
+  "id": "simpson",
+  "name": "Springfield",
+  "author": ["Olsberg (Jammbo)"],
+  "description": "Homer",
+  "badge_colour": "f5e054",
+	"badge_text_colour": "937240",
+  "prefix": "simpson",
+  "main_file": "springfieldmain.lua",
+  "version": "0.0.1"
+}
