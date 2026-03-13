@@ -1146,7 +1146,7 @@ SMODS.Joker {
     calculate = function(self, card, context)
         if context.other_card and context.individual and context.cardarea == G.play and context.other_card:is_suit('Clubs') then
             if SMODS.pseudorandom_probability(card, "chalmers", 1, card.ability.extra.odds) then
-                return { mult = card.ability.extra.mult }
+                return { xmult = card.ability.extra.xmult }
             end
         end
     end
@@ -1247,9 +1247,15 @@ SMODS.Joker {
     calculate = function(self, card, context)
         if context.repetition and context.cardarea == G.play and context.other_card:get_id() == 14 then
             return {
-                mult = card.ability.extra.mult,
                 repetitions = card.ability.extra.repetitions
             }
+        end
+        if context.individual and context.cardarea == G.play then
+            if context.other_card:get_id() == 14 then
+                return {
+                    mult = card.ability.extra.mult
+                }
+            end
         end
     end,
 }
