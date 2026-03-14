@@ -1259,3 +1259,5 @@ SMODS.Joker {
         end
     end,
 }
+
+--huge penises
