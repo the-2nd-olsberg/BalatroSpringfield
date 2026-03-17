@@ -1928,7 +1928,7 @@ SMODS.Joker {
     eternal_compat = true,
     perishable_compat = true,
     atlas = 'SimpsJokers',
-    pos = { x = 4, y = 9 },
+    pos = { x = 5, y = 9 },
     pools = { ['SpringfieldJokers'] = true },
 
     config = { extra = { mult_gain = 1, mult = 0 } },
