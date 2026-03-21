@@ -1,7 +1,7 @@
 --Atlas
 SMODS.Atlas {
     key = 'SimpsJokers',
-    path = 'jokers.png',
+    path = 'springjokers.png',
     px = 71,
     py = 95
     
