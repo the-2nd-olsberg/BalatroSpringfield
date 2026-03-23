@@ -2703,7 +2703,7 @@ SMODS.Joker {
             if G.GAME.blind.chips - (hand_chips * mult) <= 0 then
                 card.ability.extra.xmult = card.ability.extra.xmult - card.ability.extra.xmult_loss
                 if card.ability.extra.xmult <= 0 then
-                    card:remove
+                    card:remove()
                 end
                 return {
                     message = 'Arrggh!'
