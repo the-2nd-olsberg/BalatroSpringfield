@@ -365,6 +365,10 @@ SMODS.Joker {
     pools = { ['SpringfieldJokers'] = true },
 
     config = { extra = { mult = 2 } },
+
+    in_pool = function(self, args)
+        return false
+    end
 }
 
 SMODS.Joker {
@@ -509,6 +513,10 @@ SMODS.Joker {
     pools = { ['SpringfieldJokers'] = true },
 
     config = { extra = { mult = 2 } },
+
+    in_pool = function(self, args)
+        return false
+    end
 }
 
 SMODS.Joker {
@@ -754,7 +762,7 @@ SMODS.Joker {
     config = { extra = { dollar_gain = 1, dollars = 2 } },
 
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.dollar_gain, card.ability.extra.dollar } }
+        return { vars = { card.ability.extra.dollar_gain, card.ability.extra.s } }
     end,
 
     calculate = function(self, card, context)
@@ -936,6 +944,10 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 1, y = 5 },
     pools = { ['SpringfieldJokers'] = true },
+
+    in_pool = function(self, args)
+        return false
+    end
 }
 
 SMODS.Joker {
@@ -1063,7 +1075,7 @@ SMODS.Joker {
         text = {
             'All cards in {C:attention}first{}',
             'played hand are made {C:attention}Leatherbound{}',
-            'TBC'
+            'TBC currently just lisa clone'
         }
     },
     blueprint_compat = false,
@@ -1079,6 +1091,7 @@ SMODS.Joker {
     config = { extra = { cards = 2 } },
 
     loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_CENTERS['j_simpson_lisa']
         return { vars = {  } }
     end,
 
@@ -1127,6 +1140,10 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 1, y = 6 },
     pools = { ['SpringfieldJokers'] = true },
+
+    in_pool = function(self, args)
+        return false
+    end
 }
 
 SMODS.Joker {
