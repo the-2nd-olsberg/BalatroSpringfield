@@ -2393,7 +2393,7 @@ SMODS.Joker {
     pos = { x = 9, y = 2 },
     pools = { ['SpringfieldJokers'] = true },
 
-    config = { extra = { xmult_good = 2, xmult_bad = 0.6, hand = 'Pair' } },
+    config = { extra = { xmult_good = 2, xmult_bad = 0.7, hand = 'Pair' } },
 
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.xmult_good, card.ability.extra.xmult_bad, card.ability.extra.hand } }
@@ -2670,7 +2670,7 @@ SMODS.Joker {
     add_to_deck = function(self, card, from_debuff)
         for k, v in pairs(G.playing_cards) do
             if v:get_id() <= 7 then
-                SMODS.debuff_card(v, true, "bart_debuff")
+                SMODS.debuff_card(v, true, "helen_debuff")
             end
         end
     end,
@@ -2678,7 +2678,7 @@ SMODS.Joker {
     remove_from_deck = function(self, card, from_debuff)
         for k, v in pairs(G.playing_cards) do
             if v:get_id() <= 7 then
-                SMODS.debuff_card(v, false, "bart_debuff")
+                SMODS.debuff_card(v, false, "helen_debuff")
             end
         end
     end
