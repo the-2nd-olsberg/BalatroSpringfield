@@ -2,10 +2,10 @@
   "id": "simpson",
   "name": "Springfield",
   "author": ["Olsberg (Jammbo)"],
-  "description": "Homer",
+  "description": "A Balatro mod based on the underground indie show called The Simpsons (TM). D'oh!",
   "badge_colour": "f5e054",
 	"badge_text_colour": "937240",
   "prefix": "simpson",
   "main_file": "springfieldmain.lua",
-  "version": "0.3"
+  "version": "0.4"
 }
