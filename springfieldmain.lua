@@ -40,3 +40,4 @@ if next(SMODS.find_mod("malverk")) then
 end
 
 assert(SMODS.load_file("src/jokers.lua"))()
+assert(SMODS.load_file("src/enhancements.lua"))()

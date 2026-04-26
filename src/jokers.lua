@@ -29,7 +29,7 @@ SMODS.Joker {
         }
     },
     blueprint_compat = true,
-    rarity = 1,
+    rarity = 2,
     cost = 6,
     discovered = true,
     eternal_compat = true,
@@ -351,7 +351,8 @@ SMODS.Joker {
     loc_txt = {
         name = 'Matt Groening',
         text = {
-            'TBC'
+            '{C:attention}Yellow Cards give',
+            'an additional {X:red,C:white}X#1#{} Mult'
         }
     },
     blueprint_compat = true,
@@ -364,9 +365,25 @@ SMODS.Joker {
     pos = { x = 3, y = 2 },
     pools = { ['SpringfieldJokers'] = true },
 
-    config = { extra = { mult = 2 } },
+    config = { extra = { xmult = 1.3 } },
+
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_CENTERS['m_simpson_yellow']
+        return { vars = { card.ability.extra.xmult } }
+    end,
+
+    calculate = function(self, card, context)
+        if context.other_card and context.individual and context.cardarea == G.play and SMODS.has_enhancement(context.other_card, 'm_simpson_yellow') then
+            return { xmult = card.ability.extra.xmult }
+        end
+    end,
 
     in_pool = function(self, args)
+        for _, playing_card in ipairs(G.playing_cards or {}) do
+            if SMODS.has_enhancement(playing_card, 'm_simpson_yellow') then
+                return true
+            end
+        end
         return false
     end
 }
@@ -530,7 +547,7 @@ SMODS.Joker {
     },
     blueprint_compat = true,
     rarity = 2,
-    cost = 7,
+    cost = 6,
     discovered = true,
     eternal_compat = true,
     perishable_compat = false,
@@ -560,7 +577,7 @@ SMODS.Joker {
         }
     },
     blueprint_compat = true,
-    rarity = 1,
+    rarity = 2,
     cost = 6,
     discovered = true,
     eternal_compat = true,
@@ -600,7 +617,7 @@ SMODS.Joker {
         name = 'Ned Flanders',
         text = {
             '{C:green}#1# in #2#{} chance to enchance the {C:attention}2{}',
-            ' last scored cards when {C:attention}5{} cards are played'
+            'last scored cards when {C:attention}5{} cards are played'
         }
     },
     blueprint_compat = true,
@@ -751,7 +768,7 @@ SMODS.Joker {
     },
     blueprint_compat = false,
     rarity = 1,
-    cost = 6,
+    cost = 5,
     discovered = true,
     eternal_compat = true,
     perishable_compat = true,
@@ -932,12 +949,13 @@ SMODS.Joker {
     loc_txt = {
         name = 'Barney',
         text = {
-            'TBC'
+            'Retrigger all played',
+            '{C:attention}Alcoholic{} Cards'
         }
     },
     blueprint_compat = true,
-    rarity = 3,
-    cost = 7,
+    rarity = 1,
+    cost = 5,
     discovered = true,
     eternal_compat = true,
     perishable_compat = true,
@@ -945,7 +963,26 @@ SMODS.Joker {
     pos = { x = 1, y = 5 },
     pools = { ['SpringfieldJokers'] = true },
 
+    config = { extra = { repetitions = 1 } },
+
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_CENTERS['m_simpson_alcohol']
+        return { vars = { } }
+    end,
+
+    calculate = function(self, card, context)
+        if context.repetition and context.cardarea == G.play and SMODS.has_enhancement(context.other_card, 'm_simpson_alcohol') then
+            return {
+                repetitions = card.ability.extra.repetitions
+            }
+        end
+    end,
     in_pool = function(self, args)
+        for _, playing_card in ipairs(G.playing_cards or {}) do
+            if SMODS.has_enhancement(playing_card, 'm_simpson_alcohol') then
+                return true
+            end
+        end
         return false
     end
 }
@@ -969,7 +1006,7 @@ SMODS.Joker {
     pos = { x = 2, y = 5 },
     pools = { ['SpringfieldJokers'] = true },
 
-    config = { extra = { odds = 3 } },
+    config = { extra = { odds = 4 } },
 
     loc_vars = function(self, info_queue, card)
         local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "hibbert")
@@ -978,7 +1015,7 @@ SMODS.Joker {
 
     calculate = function (self, card, context)
         if context.cardarea == G.play and context.individual and context.other_card and not context.blueprint then
-            if SMODS.pseudorandom_probability(card, "hibbert", 1, card.ability.extra.odds) then
+            if SMODS.pseudorandom_probability(card, "hibbert", 1, card.ability.extra.odds) and not context.other_card:get_seal() then
                 context.other_card:set_seal(SMODS.poll_seal({key = 'supercharge', guaranteed = true}), nil, true)
             end
         end        
@@ -1073,9 +1110,8 @@ SMODS.Joker {
     loc_txt = {
         name = 'Rev. Lovejoy',
         text = {
-            'All cards in {C:attention}first{}',
+            'First {C:attention}#1#{} cards in {C:attention}first{}',
             'played hand are made {C:attention}Leatherbound{}',
-            'TBC currently just lisa clone'
         }
     },
     blueprint_compat = false,
@@ -1088,11 +1124,11 @@ SMODS.Joker {
     pos = { x = 5, y = 5 },
     pools = { ['SpringfieldJokers'] = true },
 
-    config = { extra = { cards = 2 } },
+    config = { extra = { cards = 3 } },
 
     loc_vars = function(self, info_queue, card)
-        info_queue[#info_queue + 1] = G.P_CENTERS['j_simpson_lisa']
-        return { vars = {  } }
+        info_queue[#info_queue + 1] = G.P_CENTERS['m_simpson_leatherbound']
+        return { vars = { card.ability.extra.cards } }
     end,
 
     calculate = function(self, card, context)
@@ -1101,23 +1137,17 @@ SMODS.Joker {
             juice_card_until(card, eval, true)
         end
         if context.before and context.main_eval and not context.blueprint and G.GAME.current_round.hands_played == 0 then
-            local cen_pool = {}
-            for _, enhancement_center in pairs(G.P_CENTER_POOLS["Enhanced"]) do
-                if enhancement_center.key ~= 'm_stone' and not enhancement_center.overrides_base_rank then
-                    cen_pool[#cen_pool + 1] = enhancement_center
-                end
-            end
             local amount = 0
             local enhanced = false
             for _, scored_card in ipairs(context.scoring_hand) do
-                if amount < 2 and scored_card.config.center.key == 'c_base' then
-                    scored_card:set_ability(pseudorandom_element(cen_pool, 'spe_card').key, nil, true)
+                if amount < card.ability.extra.cards then
+                    scored_card:set_ability('m_simpson_leatherbound', nil, true)
                     enhanced = true
                 end
                 amount = amount + 1
             end
             if enhanced == true then
-                SMODS.calculate_effect({message = 'Lizard Queen'}, card)
+                SMODS.calculate_effect({message = 'Amen.'}, card)
             end
         end
     end
@@ -1258,8 +1288,8 @@ SMODS.Joker {
         }
     },
     blueprint_compat = true,
-    rarity = 2,
-    cost = 6,
+    rarity = 1,
+    cost = 5,
     discovered = true,
     eternal_compat = true,
     perishable_compat = true,
@@ -1316,17 +1346,18 @@ SMODS.Joker {
 
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play and context.other_card then
+            local prime = true
             local n = context.other_card:get_id()
             for i = 2, n^(1/2) do
                 if (n % i) == 0 then
-                    return {
-                        mult = 0
-                    }
+                    prime = false
                 end
             end
-            return {
-                mult = card.ability.extra.mult
-            }
+            if prime then
+                return {
+                    mult = card.ability.extra.mult
+                }
+            end
         end
     end,
 }
@@ -1515,22 +1546,22 @@ SMODS.Joker {
     pos = { x = 5, y = 7 },
     pools = { ['SpringfieldJokers'] = true },
 
-    config = { extra = { chip_gain = 6, mult_gain = 4, chips = 0, mult = 0 } },
+    config = { extra = { mult_gain = 6, mult = 0 } },
 
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.chip_gain, card.ability.extra.mult_gain, card.ability.extra.chips, card.ability.extra.mult } }
+        return { vars = { card.ability.extra.mult_gain, card.ability.extra.mult } }
     end,
 
     calculate = function(self, card, context)
         if context.selling_card and context.card.ability and context.card.ability.set == 'Joker' and not context.blueprint then
-            card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chip_gain
+            card.ability.extra.chips = card.ability.extra.mult + card.ability.extra.mult_gain
             return {
                 message = 'Upgrade!'
             }
         end
         if context.joker_main then
             return {
-                mult = card.ability.extra.chips,
+                mult = card.ability.extra.mult,
             }
         end
     end
@@ -1883,7 +1914,7 @@ SMODS.Joker {
     pos = { x = 3, y = 9 },
     pools = { ['SpringfieldJokers'] = true },
 
-    config = { extra = { dollars = 3 } },
+    config = { extra = { dollars = 1 } },
 
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.dollars, colours = { G.C.SUITS.Clubs } } }
@@ -1899,9 +1930,9 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'mcbain',
+    key = 'wolfcastle',
     loc_txt = {
-        name = 'McBain',
+        name = 'Rainier Wolfcastle',
         text = {
             'Played {C:attention}face{} cards give',
             '{C:red}+#1#{} Mult and are destroyed'
@@ -1917,7 +1948,7 @@ SMODS.Joker {
     pos = { x = 4, y = 9 },
     pools = { ['SpringfieldJokers'] = true },
 
-    config = { extra = { mult = 8 } },
+    config = { extra = { mult = 15 } },
 
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult } }
@@ -2000,7 +2031,7 @@ SMODS.Joker {
         }
     },
     blueprint_compat = true,
-    rarity = 1,
+    rarity = 2,
     cost = 5,
     discovered = true,
     eternal_compat = true,
@@ -2089,7 +2120,7 @@ SMODS.Joker {
 SMODS.Joker {
     key = 'itchy_scratchy',
     loc_txt = {
-        name = 'The Itchy & Scratchy Show',
+        name = 'Itchy & Scratchy',
         text = {
             'Gains {C:red}+#1#{} Mult when',
             'a card is {C:attention}destroyed',
@@ -2217,7 +2248,7 @@ SMODS.Joker {
     pos = { x = 10, y = 1 },
     pools = { ['SpringfieldJokers'] = true },
 
-    config = { extra = { mult = 4, mult_gain = 2, dollars = -3 } },
+    config = { extra = { mult = 4, mult_gain = 2, dollars = -4 } },
 
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult, card.ability.extra.mult_gain, -card.ability.extra.dollars } }
@@ -2264,7 +2295,7 @@ SMODS.Joker {
     pos = { x = 6, y = 2 },
     pools = { ['SpringfieldJokers'] = true },
 
-    config = { extra = { dollars = 2 } },
+    config = { extra = { dollars = 1 } },
 
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.dollars } }
@@ -2308,7 +2339,7 @@ SMODS.Joker {
     pos = { x = 7, y = 2 },
     pools = { ['SpringfieldJokers'] = true },
 
-    config = { extra = { chips = 0, chip_gain = 5 } },
+    config = { extra = { chips = 0, chip_gain = 3 } },
 
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.chips, card.ability.extra.chip_gain } }
@@ -2341,7 +2372,7 @@ SMODS.Joker {
     },
     blueprint_compat = true,
     rarity = 2,
-    cost = 7,
+    cost = 6,
     discovered = true,
     eternal_compat = true,
     perishable_compat = true,
@@ -2349,7 +2380,7 @@ SMODS.Joker {
     pos = { x = 8, y = 2 },
     pools = { ['SpringfieldJokers'] = true },
 
-    config = { extra = { chips = 0, chip_gain = 15 } },
+    config = { extra = { chips = 0, chip_gain = 7 } },
 
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.chips, card.ability.extra.chip_gain } }
@@ -2471,7 +2502,7 @@ SMODS.Joker {
     },
     blueprint_compat = true,
     rarity = 2,
-    cost = 6,
+    cost = 5,
     discovered = true,
     eternal_compat = true,
     perishable_compat = true,
@@ -2682,7 +2713,7 @@ SMODS.Joker {
     },
     blueprint_compat = true,
     rarity = 3,
-    cost = 8,
+    cost = 7,
     discovered = true,
     eternal_compat = true,
     perishable_compat = true,
@@ -2960,7 +2991,7 @@ SMODS.Joker {
     },
     blueprint_compat = true,
     rarity = 3,
-    cost = 9,
+    cost = 6,
     discovered = true,
     eternal_compat = true,
     perishable_compat = true,
@@ -3042,8 +3073,8 @@ SMODS.Joker {
     loc_txt = {
         name = 'Kearney Matthew Zzyzwicz, Sr.',
         text = {
-            '{X:red,C:white}X#1#{} Mult if any cards',
-            'were {C:attention}destroyed{} this {C:attention}Ante'
+            '{X:red,C:white}X#1#{} Mult if any playing',
+            'cards were {C:attention}destroyed{} this {C:attention}Ante'
         }
     },
     blueprint_compat = true,
@@ -3091,7 +3122,7 @@ SMODS.Joker {
     },
     blueprint_compat = false,
     rarity = 1,
-    cost = 1,
+    cost = 5,
     discovered = true,
     eternal_compat = true,
     perishable_compat = true,
@@ -3099,7 +3130,7 @@ SMODS.Joker {
     pos = { x = 9, y = 5 },
     pools = { ['SpringfieldJokers'] = true },
 
-    config = { extra = { dollars = 3, cards = 2, me_destroying = false, counter = 0 } },
+    config = { extra = { dollars = 3, cards = 2, counter = 0 } },
 
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.dollars, card.ability.extra.cards } }
@@ -3108,14 +3139,12 @@ SMODS.Joker {
     calculate = function (self, card, context)
         if context.destroy_card and context.cardarea == G.play and not context.blueprint then
             if context.destroy_card.config.center.key == 'm_wild' then
-                card.ability.extra.me_destroying = true
                 return {
                     remove = true
                 }
             end
         end
-        if context.remove_playing_cards and card.ability.extra.me_destroying and not context.blueprint then
-            card.ability.extra.me_destroying = false
+        if context.remove_playing_cards and not context.blueprint then
             local second_counter = 0
             for i = 1, #context.removed do
                 card.ability.extra.counter = card.ability.extra.counter + 1
@@ -3145,7 +3174,7 @@ SMODS.Joker {
         }
     },
     blueprint_compat = true,
-    rarity = 1,
+    rarity = 2,
     cost = 6,
     discovered = true,
     eternal_compat = true,
@@ -3354,7 +3383,7 @@ SMODS.Joker {
     },
     blueprint_compat = true,
     rarity = 2,
-    cost = 6,
+    cost = 7,
     discovered = true,
     eternal_compat = true,
     perishable_compat = true,
