@@ -168,7 +168,7 @@ SMODS.Joker{
             local amount = 0
             local enhanced = false
             for _, scored_card in ipairs(context.scoring_hand) do
-                if amount < 2 and scored_card.config.center.key == 'c_base' then
+                if amount < 2 then
                     scored_card:set_ability(pseudorandom_element(cen_pool, 'spe_card').key, nil, true)
                     enhanced = true
                 end
@@ -763,7 +763,6 @@ SMODS.Joker {
         text = {
             'Earn {C:money}$#2#{} at the end of the round',
             'Gains {C:money}$#1#{} when a {C:red}Duff{} Card is used',
-            'TBC'
         }
     },
     blueprint_compat = false,
@@ -776,14 +775,20 @@ SMODS.Joker {
     pos = { x = 1, y = 4 },
     pools = { ['SpringfieldJokers'] = true },
 
-    config = { extra = { dollar_gain = 1, dollars = 2 } },
+    config = { extra = { dollar_gain = 1, dollars = 1 } },
 
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.dollar_gain, card.ability.extra.s } }
+        return { vars = { card.ability.extra.dollar_gain, card.ability.extra.dollars } }
     end,
 
     calculate = function(self, card, context)
-        
+        if context.using_consumeable and context.consumeable.config.center.set == 'SimpsonsTrading' and context.consumeable.config.center.key == 'c_simpson_duff' and not context.blueprint then
+            card.ability.extra.dollars = card.ability.extra.dollars + card.ability.extra.dollar_gain
+            return {
+                message = 'Upgrade!',
+                colour = G.C.MONEY
+            }
+        end
     end,
 
     calc_dollar_bonus = function(self, card)
@@ -1444,7 +1449,6 @@ SMODS.Joker {
         text = {
             'Earn {C:money}$#1#{} when a',
             '{C:attention}Simpsons Trading Card{} is used',
-            'TBC: Currently does Tarots'
         }
     },
     blueprint_compat = true,
@@ -1464,7 +1468,7 @@ SMODS.Joker {
     end,
 
     calculate = function(self, card, context)
-        if context.using_consumeable and not context.blueprint and context.consumeable.ability.set == ("Tarot") then
+        if context.using_consumeable and not context.blueprint and context.consumeable.config.center.set == 'SimpsonsTrading' then
             G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) + card.ability.extra.dollars
             return {
                 dollars = card.ability.extra.dollars,
@@ -1533,7 +1537,7 @@ SMODS.Joker {
         text = {
             'Gains {C:red}+#1#{} Mult',
             'when a {C:attention}Joker{} is sold',
-            '{C:inactive}(Currently{} {C:red}+#3#{} {C:inactive}Mult){}',
+            '{C:inactive}(Currently{} {C:red}+#2#{} {C:inactive}Mult){}',
         }
     },
     blueprint_compat = true,
@@ -1739,7 +1743,7 @@ SMODS.Joker {
     rarity = 2,
     cost = 4,
     discovered = true,
-    eternal_compat = true,
+    eternal_compat = false,
     perishable_compat = true,
     atlas = 'SimpsJokers',
     pos = { x = 4, y = 8 },
@@ -2455,7 +2459,6 @@ SMODS.Joker {
             'Gains {C:chips}+#1#{} Chips when a',
             '{C:attention}Simpsons Trading Card{} is sold',
             '{C:inactive}(Currently{} {C:chips}+#2#{} {C:inactive}Chips){}',
-            'TBC: Does Tarots for now'
         }
     },
     blueprint_compat = true,
@@ -2468,14 +2471,14 @@ SMODS.Joker {
     pos = { x = 10, y = 2 },
     pools = { ['SpringfieldJokers'] = true },
 
-    config = { extra = { chip_gain = 6, chips = 0 } },
+    config = { extra = { chip_gain = 4, chips = 0 } },
 
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.chip_gain, card.ability.extra.chips } }
     end,
 
     calculate = function(self, card, context)
-        if context.selling_card and context.card.ability and context.card.ability.set == 'Tarot' and not context.blueprint then
+        if context.selling_card and context.card.ability and context.card.config.center.set == 'SimpsonsTrading' and not context.blueprint then
             card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chip_gain
             return {
                 message = 'Upgrade!'
@@ -2893,7 +2896,7 @@ SMODS.Joker {
         text = {
             'Gains {C:red}+#1#{} Mult when',
             'a {C:red}Duff Card{} is used',
-            'TBC'
+            '{C:inactive}(Currently{}{C:red} +#2#{} {C:inactive}Mult){}',
         }
     },
     blueprint_compat = false,
@@ -2906,18 +2909,25 @@ SMODS.Joker {
     pos = { x = 9, y = 4 },
     pools = { ['SpringfieldJokers'] = true },
 
-    config = { extra = {  } },
-
+    config = { extra = { mult = 0, mult_gain = 3 } },
     loc_vars = function(self, info_queue, card)
-        return { vars = {  } }
+        return { vars = { card.ability.extra.mult_gain, card.ability.extra.mult } }
     end,
 
     calculate = function(self, card, context)
-        
+        if context.using_consumeable and context.consumeable.config.center.set == 'SimpsonsTrading' and context.consumeable.config.center.key == 'c_simpson_duff' and not context.blueprint then
+            card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_gain
+            return {
+                message = 'Upgrade!',
+                colour = G.C.RED
+            }
+        end
+        if context.joker_main then
+            return {
+                mult = card.ability.extra.mult,
+            }
+        end
     end,
-    in_pool = function(self, args)
-        return false
-    end
 }
 
 SMODS.Joker {
