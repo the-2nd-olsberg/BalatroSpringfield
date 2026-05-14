@@ -3,7 +3,7 @@ SMODS.ConsumableType {
   key = 'SimpsonsTrading',
   default = 'c_simpson_duff',
   collection_rows = { 5,5 },
-  primary_colour = HEX("f2df46"),
+  primary_colour = HEX("e1841d"),
   secondary_colour = HEX("fd5f55"),
   loc_txt = {
       collection = 'Simpsons Trading Cards',

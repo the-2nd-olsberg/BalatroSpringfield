@@ -701,7 +701,7 @@ SMODS.Joker {
     remove_from_deck = function(self, card, from_debuff)
          G.E_MANAGER:add_event(Event({
             func = function()
-                G.GAME.discount_percent = 37.5
+                G.GAME.discount_percent = 0
                 for _, v in pairs(G.I.CARD) do
                     if v.set_cost then v:set_cost() end
                 end
@@ -1622,7 +1622,7 @@ SMODS.Joker {
     remove_from_deck = function(self, card, from_debuff)
          G.E_MANAGER:add_event(Event({
             func = function()
-                G.GAME.discount_percent = -53.8462
+                G.GAME.discount_percent = 0
                 for _, v in pairs(G.I.CARD) do
                     if v.set_cost then v:set_cost() end
                 end
@@ -3702,9 +3702,175 @@ SMODS.Joker {
             }
         end
         if context.using_consumeable then
+            print(G.GAME.consumeable_usage_total)
             return {
                 dollars = -card.ability.extra.dollars
             }
+        end
+    end
+}
+
+SMODS.Joker {
+    key = 'luigi',
+    loc_txt = {
+        name = 'Luigi Risotto',
+        text = {
+            'Gains {C:chips}+#1#{} Chip',
+            'for every {C:money}$1{} spent',
+            'in the shop',
+            '{C:inactive}(Currently{} {C:chips}+#2#{} {C:inactive}Chips){}',
+        }
+    },
+    blueprint_compat = true,
+    rarity = 1,
+    cost = 1,
+    discovered = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    atlas = 'SimpsJokers',
+    pos = { x = 6, y = 8 },
+    pools = { ['SpringfieldJokers'] = true },
+
+    config = { extra = { chips = SIMPSON_DOLLARS_SPENT, chip_gain = 1 } },
+
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.chip_gain, SIMPSON_DOLLARS_SPENT } }
+    end,
+
+    calculate = function (self, card, context)
+        if context.joker_main then
+            return {
+                chips = SIMPSON_DOLLARS_SPENT
+            }
+        end
+    end
+}
+
+SMODS.Joker {
+    key = 'maude',
+    loc_txt = {
+        name = 'Maude Flanders',
+        text = {
+            'Gains {C:red}+#1#{} Mult when an',
+            '{C:attention}enhanced{} card is {C:attention}destroyed',
+            '{C:inactive}(Currently{} {C:red}+#2#{} {C:inactive}Mult){}',
+            '{C:inactive}Includes Seals and Editions'
+        }
+    },
+    blueprint_compat = true,
+    rarity = 2,
+    cost = 6,
+    discovered = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    atlas = 'SimpsJokers',
+    pos = { x = 7, y = 8 },
+    pools = { ['SpringfieldJokers'] = true },
+
+    config = { extra = { mult = 0, mult_gain = 4 } },
+
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.mult_gain, card.ability.extra.mult } }
+    end,
+
+    calculate = function (self, card, context)
+        if context.remove_playing_cards and not context.blueprint then
+            for i = 1, #context.removed do
+                if context.removed[i].seal or context.removed[i].edition or context.removed[i].config.center.key ~= 'c_base' then
+                    card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_gain
+                    SMODS.calculate_effect({message = "Upgrade!", colour = G.C.RED}, card)
+                end
+            end
+        end
+        if context.joker_main then
+            return {
+                mult = card.ability.extra.mult
+            }
+        end
+    end
+}
+
+SMODS.Joker {
+    key = 'god',
+    loc_txt = {
+        name = 'God',
+        text = {
+            'Gains {X:red,C:white}X#1#{} Mult for every',
+            'card {C:attention}destroyed{} during the run',
+            '{C:inactive}(Currently{} {X:red,C:white}X#2#{} {C:inactive}Mult){}',
+        }
+    },
+    blueprint_compat = true,
+    rarity = 3,
+    cost = 9,
+    discovered = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    atlas = 'SimpsJokers',
+    pos = { x = 8, y = 8 },
+    pools = { ['SpringfieldJokers'] = true },
+
+    config = { extra = { xmult_gain = 0.2 } },
+
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.xmult_gain, (SIMPSON_CARDS_DESTROYED_RUN * card.ability.extra.xmult_gain) + 1 } }
+    end,
+
+    calculate = function (self, card, context)
+        if context.remove_playing_cards and not context.blueprint then
+            SMODS.calculate_effect({message = "Upgrade!", colour = G.C.RED}, card)
+        end
+        if context.joker_main then
+            return {
+                xmult = (SIMPSON_CARDS_DESTROYED_RUN * card.ability.extra.xmult_gain) + 1
+            }
+        end
+    end
+}
+
+SMODS.Joker {
+    key = 'lurleen',
+    loc_txt = {
+        name = 'Lurleen',
+        text = {
+            '{X:red,C:white}X#1#{} Mult',
+            'loses {X:red,C:white}X#2#{} Mult',
+            'when hand played',
+            'Resets at the end',
+            'of the round'
+        }
+    },
+    blueprint_compat = true,
+    rarity = 2,
+    cost = 7,
+    discovered = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    atlas = 'SimpsJokers',
+    pos = { x = 9, y = 8 },
+    pools = { ['SpringfieldJokers'] = true },
+
+    config = { extra = { xmult = 2.5, xmult_loss = 0.5 } },
+
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.xmult, card.ability.extra.xmult_loss } }
+    end,
+
+    calculate = function (self, card, context)
+        if context.after and context.main_eval and not context.blueprint then
+            if card.ability.extra.xmult > 1 then
+                card.ability.extra.xmult = card.ability.extra.xmult - card.ability.extra.xmult_loss
+                SMODS.calculate_effect({message = "X"..card.ability.extra.xmult, colour = G.C.RED}, card)
+            end
+        end
+        if context.joker_main then
+            return {
+                xmult = card.ability.extra.xmult
+            }
+        end
+        if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint then
+            card.ability.extra.xmult = 2.5
+                SMODS.calculate_effect({message = "Reset", colour = G.C.RED}, card)
         end
     end
 }
@@ -3739,3 +3905,29 @@ SMODS.Joker {
     end
 }
 ]]
+
+SIMPSON_DOLLARS_SPENT = 0
+SIMPSON_CARDS_DESTROYED_RUN = 0
+
+local oldstartrun = Game.start_run
+function Game:start_run(args)
+    local g = oldstartrun(self, args)
+    SIMPSON_DOLLARS_SPENT = 0
+    SIMPSON_CARDS_DESTROYED_RUN = 0
+    return g
+end
+
+--Mod Stuff
+SMODS.current_mod.calculate = function(self, context)
+    if context.buying_card or context.open_booster then
+        SIMPSON_DOLLARS_SPENT = SIMPSON_DOLLARS_SPENT + context.card.cost
+    end
+    if context.reroll_shop then
+        SIMPSON_DOLLARS_SPENT = SIMPSON_DOLLARS_SPENT + context.cost
+    end
+    if context.remove_playing_cards then
+        for i = 1, #context.removed do
+            SIMPSON_CARDS_DESTROYED_RUN = SIMPSON_CARDS_DESTROYED_RUN + 1
+        end
+    end
+end
