@@ -319,3 +319,42 @@ SMODS.Seal{
         end
     end,
 }
+
+SMODS.Seal{
+    name = "pollution",
+    key = "pollution",
+    badge_colour = HEX("bfae00"),
+    loc_txt = {
+        label = 'Pollution Seal',
+        name = 'Pollution Seal',
+        text = { 
+            '{C:green}#1# in #2#{} chance to',
+            'give a random card',
+            'in hand an {V:1}Acid{} Seal',
+            'when scored'
+        }
+    },
+    atlas = 'SimpsEnhance',
+    pos = { x = 5, y = 1 },
+    config = { odds = 3 },
+    
+    loc_vars = function(self, info_queue, card)
+        local numerator, denominator = SMODS.get_probability_vars(self, 1, self.config.odds, "pollution")
+        return { vars = { numerator, denominator, colours = { HEX('96cc2e') } } }
+    end,
+    calculate = function(self, card, context)
+        if context.main_scoring and context.cardarea == G.play then
+            if SMODS.pseudorandom_probability(self, "pollution", 1, self.config.odds) then
+                G.E_MANAGER:add_event(Event({
+                    trigger = 'after',
+                    delay = 0.15,
+                    func = function()
+                        local pos = pseudorandom('spread', 1, #G.hand.cards)
+                        G.hand.cards[pos]:set_seal('simpson_acid', nil, true)
+                        return true
+                    end
+                }))
+            end
+        end
+    end,
+}

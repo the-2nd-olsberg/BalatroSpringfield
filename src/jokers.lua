@@ -815,12 +815,12 @@ SMODS.Joker {
     pos = { x = 2, y = 4 },
     pools = { ['SpringfieldJokers'] = true },
 
-    config = { extra = { counter = 0 } },
+    config = { extra = { counter = 0, levels = 1 } },
 
     calculate = function (self, card, context)
         if context.end_of_round and context.game_over == false and context.main_eval then
             if card.ability.extra.counter == 1 then
-                SMODS.smart_level_up_hand(card, pseudorandom_element(G.handlist, 'abesimpson'), nil, levels)
+                SMODS.upgrade_poker_hands({hands = {pseudorandom_element(G.handlist, 'abesimpson')}, level_up = 1, from = card})
             end
             card.ability.extra.counter = card.ability.extra.counter + 1
             if card.ability.extra.counter == 2 then
@@ -3025,7 +3025,7 @@ SMODS.Joker {
 					hand_type = G.GAME.hands[G.P_CENTER_POOLS.Planet[i].config.hand_type]
 				end
 			end
-            SMODS.smart_level_up_hand(card, hand_type.key, nil, card.ability.extra.levels - 1)
+            SMODS.upgrade_poker_hands({hands = {hand_type.key}, level_up = card.ability.extra.levels - 1, from = card})
             return {
                 dollars = -card.ability.extra.dollars
             }
@@ -3500,6 +3500,212 @@ SMODS.Joker {
             if G.jokers.cards[i] == card then other_joker = G.jokers.cards[i + 2] end
         end
         return SMODS.blueprint_effect(card, other_joker, context)
+    end
+}
+
+SMODS.Joker {
+    key = 'bumblebee',
+    loc_txt = {
+        name = 'Bumblebee Man',
+        text = {
+            '{C:red}+#1#{} Mult {C:chips}+#2#{} Chips',
+            'if hand contains',
+            'a {V:2}Diamond{} and {V:1}Spade{}'
+        }
+    },
+    blueprint_compat = true,
+    rarity = 1,
+    cost = 5,
+    discovered = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    atlas = 'SimpsJokers',
+    pos = { x = 6, y = 7 },
+    pools = { ['SpringfieldJokers'] = true },
+
+    config = { extra = { mult = 3, chips = 20, suit1 = 'Spades', suit2 = 'Diamonds' } },
+
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.mult, card.ability.extra.chips, colours = { G.C.SUITS[card.ability.extra.suit1], G.C.SUITS[card.ability.extra.suit2] } } }
+    end,
+
+    calculate = function (self, card, context)
+        if context.joker_main then
+            local spade = false
+            local diamond = false
+            for i = 1, #context.scoring_hand do
+                if spade == false or diamond == false then
+                    if context.scoring_hand[i]:is_suit(card.ability.extra.suit1) then
+                        spade = true
+                    end
+                    if context.scoring_hand[i]:is_suit(card.ability.extra.suit2) then
+                        diamond = true
+                    end
+                end
+            end
+            if diamond and spade then
+                return {
+                    mult = card.ability.extra.mult,
+                    chips = card.ability.extra.chips
+                }
+            end
+        end
+    end
+}
+
+SMODS.Joker {
+    key = 'gil',
+    loc_txt = {
+        name = 'Gil Gunderson',
+        text = {
+            'Earn {C:money}$#1#{} when',
+            'a {C:red}Simpsons Trading',
+            'Card is used'
+        }
+    },
+    blueprint_compat = true,
+    rarity = 1,
+    cost = 5,
+    discovered = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    atlas = 'SimpsJokers',
+    pos = { x = 7, y = 7 },
+    pools = { ['SpringfieldJokers'] = true },
+
+    config = { extra = { dollars = 2 } },
+
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.dollars } }
+    end,
+
+    calculate = function (self, card, context)
+        if context.using_consumeable and context.consumeable.config.center.set == 'SimpsonsTrading' then
+            return {
+                dollars = card.ability.extra.dollars
+            }
+        end
+    end
+}
+
+SMODS.Joker {
+    key = 'jebidiah',
+    loc_txt = {
+        name = 'Jebidiah Springfield',
+        text = {
+            '{C:green}#1# in #2#{} chance to',
+            'level up hand {C:attention}above{} and {C:attention}below{}',
+            'the hand played'
+        }
+    },
+    blueprint_compat = true,
+    rarity = 3,
+    cost = 8,
+    discovered = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    atlas = 'SimpsJokers',
+    pos = { x = 8, y = 7 },
+    pools = { ['SpringfieldJokers'] = true },
+
+    config = { extra = { odds = 4 } },
+
+    loc_vars = function(self, info_queue, card)
+        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'jebby')
+        return { vars = { numerator, denominator } }
+    end,
+
+    calculate = function(self, card, context)
+        if context.before and context.main_eval and SMODS.pseudorandom_probability(card, 'jebby', 1, card.ability.extra.odds) then
+            local order = nil
+            for hand_key, hand in pairs(G.GAME.hands) do
+                if hand_key == context.scoring_name then
+                    order = hand.order
+                end
+            end
+            print(order)
+            for hand_key, hand in pairs(G.GAME.hands) do
+                if (hand.order == order + 1) or (hand.order == order - 1) then
+                    SMODS.upgrade_poker_hands({hands = {hand_key}, level_up = 1, from = card})
+                end
+            end
+        end
+    end
+}
+
+SMODS.Joker {
+    key = 'jacqueline',
+    loc_txt = {
+        name = 'Jacqueline Bouvier',
+        text = {
+            '{C:green}#1# in #2#{} chance for each played',
+            '{C:attention}face{} card to give {X:red,C:white}X#3#{} Mult'
+        }
+    },
+    blueprint_compat = true,
+    rarity = 3,
+    cost = 7,
+    discovered = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    atlas = 'SimpsJokers',
+    pos = { x = 9, y = 7 },
+    pools = { ['SpringfieldJokers'] = true },
+
+    config = { extra = { odds = 2, xmult = 1.6 } },
+
+    loc_vars = function(self, info_queue, card)
+        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "jacqueline")
+        return { vars = { numerator, denominator, card.ability.extra.xmult } }
+    end,
+
+    calculate = function(self, card, context)
+        if context.other_card and context.individual and context.cardarea == G.play and context.other_card:is_face() then
+            if SMODS.pseudorandom_probability(card, "jacqueline", 1, card.ability.extra.odds) then
+                return { xmult = card.ability.extra.xmult }
+            end
+        end
+    end
+}
+
+
+SMODS.Joker {
+    key = 'jasper',
+    loc_txt = {
+        name = 'Jasper Beardley',
+        text = {
+            '{X:red,C:white}X#1#{} Mult',
+            'Lose {C:money}-$#2#{} when any',
+            '{C:attention}consumeable{} is used'
+        }
+    },
+    blueprint_compat = true,
+    rarity = 2,
+    cost = 6,
+    discovered = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    atlas = 'SimpsJokers',
+    pos = { x = 10, y = 7 },
+    pools = { ['SpringfieldJokers'] = true },
+
+    config = { extra = { xmult = 2, dollars = 5 } },
+
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.xmult, card.ability.extra.dollars } }
+    end,
+
+    calculate = function (self, card, context)
+        if context.joker_main then
+            return {
+                xmult = card.ability.extra.xmult
+            }
+        end
+        if context.using_consumeable then
+            return {
+                dollars = -card.ability.extra.dollars
+            }
+        end
     end
 }
 
