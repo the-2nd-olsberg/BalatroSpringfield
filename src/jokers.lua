@@ -4055,6 +4055,106 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
+    key = 'krustofsky',
+    loc_txt = {
+        name = 'Rabbi Hyman Krustofsky',
+        text = {
+            '{X:red,C:white}X#1#{} Mult for',
+            'every {C:attention}empty space{}',
+            'in played hand',
+            '{C:inactive}(Ex: #3# played cards > {X:red,C:white}X#2#{})'
+        }
+    },
+    blueprint_compat = true,
+    rarity = 3,
+    cost = 6,
+    discovered = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    atlas = 'SimpsJokers',
+    pos = { x = 8, y = 9 },
+    pools = { ['SpringfieldJokers'] = true },
+
+    config = { extra = { xmult = 0.3, amount = 3 } },
+
+    loc_vars = function(self, info_queue, card)
+        local example = (card.ability.extra.xmult * (5 - card.ability.extra.amount)) + 1
+        return { vars = { card.ability.extra.xmult, example, card.ability.extra.amount } }
+    end,
+
+    calculate = function (self, card, context)
+        if context.joker_main then
+            return {
+                xmult = (card.ability.extra.xmult * (G.GAME.starting_params.play_limit - #context.full_hand)) + 1
+            }
+        end
+    end
+}
+
+SMODS.Joker {
+    key = 'jewish_man',
+    loc_txt = {
+        name = 'Old Jewish Man',
+        text = {
+            '{C:green}#1# in #2#{} chance of',
+            'creating a copy of a',
+            'card when it is {C:attention}destroyed'
+        }
+    },
+    blueprint_compat = false,
+    rarity = 3,
+    cost = 7,
+    discovered = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    atlas = 'SimpsJokers',
+    pos = { x = 9, y = 9 },
+    pools = { ['SpringfieldJokers'] = true },
+
+    config = { extra = { odds = 3 } },
+
+    loc_vars = function(self, info_queue, card)
+        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "jew!")
+        return { vars = { numerator, denominator, card.ability.extra.amount } }
+    end,
+
+    calculate = function (self, card, context)
+        if context.remove_playing_cards and not context.blueprint then
+            for i = 1, #context.removed do
+                if SMODS.pseudorandom_probability(card, 'jew!', 1, card.ability.extra.odds) then
+                    G.playing_card = (G.playing_card and G.playing_card + 1) or 1
+                    local copy_card = copy_card(context.removed[i], nil, nil, G.playing_card)
+                    copy_card:add_to_deck()
+                    G.deck.config.card_limit = G.deck.config.card_limit + 1
+                    table.insert(G.playing_cards, copy_card)
+                    G.hand:emplace(copy_card)
+                    copy_card.states.visible = nil
+
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            copy_card:start_materialize()
+                            return true
+                        end
+                    }))
+                    return {
+                        message = localize('k_copied_ex'),
+                        colour = G.C.CHIPS,
+                        func = function() -- This is for timing purposes, it runs after the message
+                            G.E_MANAGER:add_event(Event({
+                                func = function()
+                                    SMODS.calculate_context({ playing_card_added = true, cards = { copy_card } })
+                                    return true
+                                end
+                            }))
+                        end
+                    }
+                end
+            end
+        end
+    end
+}
+
+SMODS.Joker {
     key = 'jebidiah',
     loc_txt = {
         name = 'Jebidiah Springfield',
