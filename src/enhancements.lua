@@ -293,28 +293,22 @@ SMODS.Seal{
         label = 'Acid Seal',
         name = 'Acid Seal',
         text = { 
-            '{C:red}+#3#{} Mult',
-            '{C:chips}+#4#{} Chips',
-            'All cards with an',
-            '{V:1}Acid{} Seal',
-            'gain {C:red}+#1#{} Mult',
-            'and {C:chips}+#2#{} Chips',
-            'when one is played'
+            'Gains {C:red}+#1#{} Mult',
+            'when scored'
         }
     },
     atlas = 'SimpsEnhance',
     pos = { x = 3, y = 1 },
-    config = { mult_gain = 0.2, chip_gain = 2, mult = 0, chips = 0 },
+    config = { mult_gain = 0.3 },
     loc_vars = function(self, info_queue)
-        return { vars = { self.config.mult_gain, self.config.chip_gain, self.config.mult, self.config.chips, colours = { HEX('96cc2e') } } }
+        return { vars = { self.config.mult_gain } }
     end,
     calculate = function(self, card, context)
         if context.main_scoring and context.cardarea == G.play then
-            self.config.mult = self.config.mult + self.config.mult_gain
-            self.config.chips = self.config.chips + self.config.chip_gain
+            card.ability.perma_mult = card.ability.perma_mult + self.config.mult_gain
             return {
-                mult = self.config.mult,
-                chips = self.config.chips
+                message = 'Upgrade!',
+                colour = G.C.RED
             }
         end
     end,
