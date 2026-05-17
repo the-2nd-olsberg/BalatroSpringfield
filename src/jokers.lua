@@ -516,7 +516,8 @@ SMODS.Joker {
     loc_txt = {
         name = 'Snowball II',
         text = {
-            'TBC'
+            'Creates a {C:red}Hairball',
+            'when selecting a blind'
         }
     },
     blueprint_compat = true,
@@ -529,11 +530,34 @@ SMODS.Joker {
     pos = { x = 5, y = 2 },
     pools = { ['SpringfieldJokers'] = true },
 
-    config = { extra = { mult = 2 } },
+    config = { extra = {  } },
 
-    in_pool = function(self, args)
-        return false
-    end
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_CENTERS['c_simpson_hairball']
+        return { vars = {  } }
+    end,
+
+    calculate = function(self, card, context)
+        if context.setting_blind and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+            G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+            G.E_MANAGER:add_event(Event({
+                func = (function()
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            SMODS.add_card {
+                                key = 'c_simpson_hairball'
+                            }
+                            G.GAME.consumeable_buffer = 0
+                            return true
+                        end
+                    }))
+                    SMODS.calculate_effect({ message = 'Bluegh!', colour = G.C.RED }, context.blueprint_card or card)
+                    return true
+                end)
+            }))
+            return nil, true
+        end
+    end,
 }
 
 SMODS.Joker {
@@ -4097,7 +4121,7 @@ SMODS.Joker {
         name = 'Old Jewish Man',
         text = {
             '{C:green}#1# in #2#{} chance of',
-            'creating a copy of a',
+            'creating {C:attention}#3#() copies of a',
             'card when it is {C:attention}destroyed'
         }
     },
@@ -4111,7 +4135,7 @@ SMODS.Joker {
     pos = { x = 9, y = 9 },
     pools = { ['SpringfieldJokers'] = true },
 
-    config = { extra = { odds = 3 } },
+    config = { extra = { odds = 3, amount = 2 } },
 
     loc_vars = function(self, info_queue, card)
         local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "jew!")
@@ -4122,32 +4146,34 @@ SMODS.Joker {
         if context.remove_playing_cards and not context.blueprint then
             for i = 1, #context.removed do
                 if SMODS.pseudorandom_probability(card, 'jew!', 1, card.ability.extra.odds) then
-                    G.playing_card = (G.playing_card and G.playing_card + 1) or 1
-                    local copy_card = copy_card(context.removed[i], nil, nil, G.playing_card)
-                    copy_card:add_to_deck()
-                    G.deck.config.card_limit = G.deck.config.card_limit + 1
-                    table.insert(G.playing_cards, copy_card)
-                    G.hand:emplace(copy_card)
-                    copy_card.states.visible = nil
+                    for i = 1, card.ability.extra.amount do
+                        G.playing_card = (G.playing_card and G.playing_card + 1) or 1
+                        local copy_card = copy_card(context.removed[i], nil, nil, G.playing_card)
+                        copy_card:add_to_deck()
+                        G.deck.config.card_limit = G.deck.config.card_limit + 1
+                        table.insert(G.playing_cards, copy_card)
+                        G.hand:emplace(copy_card)
+                        copy_card.states.visible = nil
 
-                    G.E_MANAGER:add_event(Event({
-                        func = function()
-                            copy_card:start_materialize()
-                            return true
-                        end
-                    }))
-                    return {
-                        message = localize('k_copied_ex'),
-                        colour = G.C.CHIPS,
-                        func = function() -- This is for timing purposes, it runs after the message
-                            G.E_MANAGER:add_event(Event({
-                                func = function()
-                                    SMODS.calculate_context({ playing_card_added = true, cards = { copy_card } })
-                                    return true
-                                end
-                            }))
-                        end
-                    }
+                        G.E_MANAGER:add_event(Event({
+                            func = function()
+                                copy_card:start_materialize()
+                                return true
+                            end
+                        }))
+                        return {
+                            message = localize('k_copied_ex'),
+                            colour = G.C.CHIPS,
+                            func = function() -- This is for timing purposes, it runs after the message
+                                G.E_MANAGER:add_event(Event({
+                                    func = function()
+                                        SMODS.calculate_context({ playing_card_added = true, cards = { copy_card } })
+                                        return true
+                                    end
+                                }))
+                            end
+                        }
+                    end
                 end
             end
         end
@@ -4238,6 +4264,7 @@ function Game:start_run(args)
     local g = oldstartrun(self, args)
     SIMPSON_DOLLARS_SPENT = 0
     SIMPSON_CARDS_DESTROYED_RUN = 0
+    SIMPSONS_FOOL_VARIABLE = nil
     return g
 end
 

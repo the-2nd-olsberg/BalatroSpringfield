@@ -476,3 +476,114 @@ SMODS.Consumable {
         delay(0.5)
     end
 }
+
+SMODS.Consumable {
+    key = 'uranium',
+    loc_txt = {
+        name = "Uranium Rod",
+        text = {
+            "Gives up to {C:attention}#1#{} random",
+            "cards a {V:1}Pollution{} Seal"
+        }
+    },
+    set = 'SimpsonsTrading',
+    atlas = 'SimpsTrading',
+    pos = { x = 3, y = 1 },
+    discovered = true,
+    config = { extra = { cards = 2 } },
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.cards, colours = {HEX("bfae00")} } }
+    end,
+    use = function(self, card, area, copier)
+        print(G.GAME.last_tarot_planet)
+        local pozes = {0, 0}
+        for i = 1, card.ability.extra.cards do
+            pozes[i] = pseudorandom('saxxy', 1, #G.hand.cards)
+            if pozes[i - 1] then
+                if pozes[i] == pozes[i - 1] then
+                    pozes[i] = pseudorandom('saxxy', 1, #G.hand.cards)
+                    if pozes[i - 1] then
+                        if pozes[i] == pozes[i - 1] then
+                            pozes[i] = pseudorandom('saxxy', 1, #G.hand.cards)
+                        end
+                    end
+                end
+            end
+        end
+        for i = 1, #pozes do
+            G.hand.cards[pozes[i]]:set_seal('simpson_pollution', nil, true)
+        end
+        delay(0.5)
+    end,
+    can_use = function(self, card)
+        return G.hand and #G.hand.cards > 0
+    end,
+}
+
+SMODS.Consumable {
+    key = 'doh',
+    loc_txt = {
+        name = "D'oh!",
+        text = {
+            "Creates the last {C:red}Simpsons{}",
+            "{C:red}Trading{} Card used this run",
+            "{s:0.8,C:attention}D'oh!{} {s:0.8}excluded"
+        }
+    },
+    set = 'SimpsonsTrading',
+    atlas = 'SimpsTrading',
+    pos = { x = 0, y = 0 },
+    discovered = true,
+    config = { extra = {  } },
+    loc_vars = function(self, info_queue, card)
+        local doh_c = SIMPSONS_FOOL_VARIABLE and G.P_CENTERS[SIMPSONS_FOOL_VARIABLE] or nil
+        local last_trading_card = doh_c and localize { type = 'name_text', key = doh_c.key, set = 'SimpsonsTrading' } or localize('k_none')
+        local colour = (not doh_c or doh_c.name == "D'oh!") and G.C.RED or G.C.GREEN
+        if not (not doh_c or doh_c.name == "D'oh!") then
+            info_queue[#info_queue + 1] = doh_c
+        end
+        local main_end = {
+            {
+                n = G.UIT.C,
+                config = { align = "bm", padding = 0.02 },
+                nodes = {
+                    {
+                        n = G.UIT.C,
+                        config = { align = "m", colour = colour, r = 0.05, padding = 0.05 },
+                        nodes = {
+                            { n = G.UIT.T, config = { text = ' ' .. last_trading_card .. ' ', colour = G.C.UI.TEXT_LIGHT, scale = 0.3, shadow = true } },
+                        }
+                    }
+                }
+            }
+        }
+        return { vars = { last_trading_card }, main_end = main_end }
+    end,
+    use = function(self, card, area, copier)
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.4,
+            func = function()
+                if G.consumeables.config.card_limit > #G.consumeables.cards then
+                    play_sound('timpani')
+                    SMODS.add_card({ key = SIMPSONS_FOOL_VARIABLE })
+                    card:juice_up(0.3, 0.5)
+                end
+                return true
+            end
+        }))
+        delay(0.6)
+    end,
+    can_use = function(self, card)
+        return G.consumeables.config.card_limit > #G.consumeables.cards and SIMPSONS_FOOL_VARIABLE ~= 'c_simpson_doh'
+    end,
+}
+
+SIMPSONS_FOOL_VARIABLE = nil
+
+--Mod Stuff
+SMODS.current_mod.calculate = function(self, context)
+    if context.using_consumeable and context.consumeable.config.center.set == 'SimpsonsTrading' and context.consumeable.config.center.key ~= 'c_simpson_doh' then
+        SIMPSONS_FOOL_VARIABLE = context.consumeable.config.center.key
+    end
+end

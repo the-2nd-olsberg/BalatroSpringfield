@@ -42,3 +42,4 @@ end
 assert(SMODS.load_file("src/jokers.lua"))()
 assert(SMODS.load_file("src/enhancements.lua"))()
 assert(SMODS.load_file("src/tradingcards.lua"))()
+assert(SMODS.load_file("src/boosters.lua"))()
