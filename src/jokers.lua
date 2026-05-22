@@ -802,6 +802,7 @@ SMODS.Joker {
     config = { extra = { dollar_gain = 1, dollars = 1 } },
 
     loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_CENTERS['c_simpson_duff']
         return { vars = { card.ability.extra.dollar_gain, card.ability.extra.dollars } }
     end,
 
@@ -844,7 +845,8 @@ SMODS.Joker {
     calculate = function (self, card, context)
         if context.end_of_round and context.game_over == false and context.main_eval then
             if card.ability.extra.counter == 1 then
-                SMODS.upgrade_poker_hands({hands = {pseudorandom_element(G.handlist, 'abesimpson')}, level_up = 1, from = card})
+                local handy = pseudorandom_element(G.handlist, 'abesimpson')
+                SMODS.upgrade_poker_hands({hands = {handy}, level_up = 1, from = card})
             end
             card.ability.extra.counter = card.ability.extra.counter + 1
             if card.ability.extra.counter == 2 then
@@ -1472,7 +1474,7 @@ SMODS.Joker {
         name = 'Groundskeeper Willie',
         text = {
             'Earn {C:money}$#1#{} when a',
-            '{C:attention}Simpsons Trading Card{} is used',
+            '{V:1}Simpsons Trading Card{} is used',
         }
     },
     blueprint_compat = true,
@@ -1488,7 +1490,7 @@ SMODS.Joker {
     config = { extra = { dollars = 2 } },
 
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.dollars } }
+        return { vars = { card.ability.extra.dollars, colours = {HEX(G_C_SIMPSONS_TRADING_CARD)} } }
     end,
 
     calculate = function(self, card, context)
@@ -2481,7 +2483,7 @@ SMODS.Joker {
         name = 'Cletus the Slack Jawed Yokel',
         text = {
             'Gains {C:chips}+#1#{} Chips when a',
-            '{C:attention}Simpsons Trading Card{} is sold',
+            '{V:1}Simpsons Trading Card{} is sold',
             '{C:inactive}(Currently{} {C:chips}+#2#{} {C:inactive}Chips){}',
         }
     },
@@ -2498,7 +2500,7 @@ SMODS.Joker {
     config = { extra = { chip_gain = 4, chips = 0 } },
 
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.chip_gain, card.ability.extra.chips } }
+        return { vars = { card.ability.extra.chip_gain, card.ability.extra.chips, colours = {HEX(G_C_SIMPSONS_TRADING_CARD)} } }
     end,
 
     calculate = function(self, card, context)
@@ -2935,6 +2937,7 @@ SMODS.Joker {
 
     config = { extra = { mult = 0, mult_gain = 3 } },
     loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_CENTERS['c_simpson_duff']
         return { vars = { card.ability.extra.mult_gain, card.ability.extra.mult } }
     end,
 
@@ -2959,7 +2962,7 @@ SMODS.Joker {
     loc_txt = {
         name = 'Disco Stu',
         text = {
-            '{C:chips}+#1#{} Chips for every',
+            '{C:chips}+#1#{} Chips for every card',
             'in your {C:attention}deck{} with an {C:purple}Edition',
             '{C:inactive}(Currently{} {C:chips}+#2#{} {C:inactive}Chips){}',
 
@@ -3583,8 +3586,8 @@ SMODS.Joker {
         name = 'Gil Gunderson',
         text = {
             'Earn {C:money}$#1#{} when',
-            'a {C:red}Simpsons Trading',
-            'Card is used'
+            'a {V:1}Simpsons Trading',
+            '{V:1}Card{} is used'
         }
     },
     blueprint_compat = true,
@@ -3600,7 +3603,7 @@ SMODS.Joker {
     config = { extra = { dollars = 2 } },
 
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.dollars } }
+        return { vars = { card.ability.extra.dollars, colours = {HEX(G_C_SIMPSONS_TRADING_CARD)} } }
     end,
 
     calculate = function (self, card, context)
@@ -4075,6 +4078,14 @@ SMODS.Joker {
                 mult = mult 
             }
         end
+    end,
+    in_pool = function(self, args)
+        for _, playing_card in ipairs(G.playing_cards) do
+            if playing_card.seal and playing_card.seal == 'simpson_pollution' then 
+                return true
+            end
+        end
+        return false
     end
 }
 
@@ -4255,30 +4266,3 @@ SMODS.Joker {
     end
 }
 ]]
-
-SIMPSON_DOLLARS_SPENT = 0
-SIMPSON_CARDS_DESTROYED_RUN = 0
-
-local oldstartrun = Game.start_run
-function Game:start_run(args)
-    local g = oldstartrun(self, args)
-    SIMPSON_DOLLARS_SPENT = 0
-    SIMPSON_CARDS_DESTROYED_RUN = 0
-    SIMPSONS_FOOL_VARIABLE = nil
-    return g
-end
-
---Mod Stuff
-SMODS.current_mod.calculate = function(self, context)
-    if context.buying_card or context.open_booster then
-        SIMPSON_DOLLARS_SPENT = SIMPSON_DOLLARS_SPENT + context.card.cost
-    end
-    if context.reroll_shop then
-        SIMPSON_DOLLARS_SPENT = SIMPSON_DOLLARS_SPENT + context.cost
-    end
-    if context.remove_playing_cards then
-        for i = 1, #context.removed do
-            SIMPSON_CARDS_DESTROYED_RUN = SIMPSON_CARDS_DESTROYED_RUN + 1
-        end
-    end
-end
