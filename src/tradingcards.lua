@@ -575,7 +575,7 @@ SMODS.Consumable {
         delay(0.6)
     end,
     can_use = function(self, card)
-        return G.consumeables.config.card_limit > #G.consumeables.cards and SIMPSONS_FOOL_VARIABLE ~= 'c_simpson_doh'
+        return G.consumeables.config.card_limit > #G.consumeables.cards and SIMPSONS_FOOL_VARIABLE ~= nil
     end,
 }
 
