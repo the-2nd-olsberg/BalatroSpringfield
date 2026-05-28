@@ -47,6 +47,7 @@ SMODS.Atlas {
 }
 
 assert(SMODS.load_file("src/jokers.lua"))()
+assert(SMODS.load_file("src/legendaries.lua"))()
 assert(SMODS.load_file("src/enhancements.lua"))()
 assert(SMODS.load_file("src/tradingcards.lua"))()
 assert(SMODS.load_file("src/boosters.lua"))()
@@ -69,7 +70,6 @@ end
 SMODS.current_mod.calculate = function(self, context)
     if context.buying_card or context.open_booster then
         SIMPSON_DOLLARS_SPENT = SIMPSON_DOLLARS_SPENT + context.card.cost
-        print(SIMPSON_DOLLARS_SPENT)
     end
     if context.reroll_shop then
         SIMPSON_DOLLARS_SPENT = SIMPSON_DOLLARS_SPENT + context.cost

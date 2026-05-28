@@ -9,7 +9,7 @@ SMODS.Atlas {
 --Pool
 SMODS.ObjectType({
 	key = 'SpringfieldJokers',
-	default = 'j_simpson_homer',
+	default = 'j_simpson_char_homer',
 	cards = {},
 	inject = function(self)
 		SMODS.ObjectType.inject(self)
@@ -18,7 +18,7 @@ SMODS.ObjectType({
 
 --Jokers
 SMODS.Joker {
-    key = 'homer',
+    key = 'char_homer',
     loc_txt = {
         name = 'Homer Simpson',
         text = {
@@ -37,6 +37,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 1, y = 1 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Fat', 'Bald', 'Man'},
 
     config = { extra = { mult_gain = 4, mult = 0 } },
 
@@ -64,7 +65,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'bart',
+    key = 'char_bart',
     loc_txt = {
         name = 'Bart Simpson',
         text = {
@@ -81,6 +82,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 2, y = 1 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Boy', 'Slingshot', 'Simpson'},
 
     config = { extra = { xmult = 1.5 } },
 
@@ -128,7 +130,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker{
-    key = 'lisa',
+    key = 'char_lisa',
     loc_txt = {
         name = 'Lisa Simpson',
         text = {
@@ -146,6 +148,7 @@ SMODS.Joker{
     atlas = 'SimpsJokers',
     pos = { x = 3, y = 1 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Girl', 'Simpson', 'Saxaphone'},
 
     config = { extra = { cards = 2 } },
 
@@ -182,7 +185,7 @@ SMODS.Joker{
 }
 
 SMODS.Joker {
-    key = 'maggie',
+    key = 'char_maggie',
     loc_txt = {
         name = 'Maggie Simpson',
         text = {
@@ -200,6 +203,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 4, y = 1 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Girl', 'Baby', 'Simpson'},
 
     config = { extra = { chips = 20, mult = 2 } },
 
@@ -215,7 +219,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'marge',
+    key = 'char_marge',
     loc_txt = {
         name = 'Marge Simpson',
         text = {
@@ -235,6 +239,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 5, y = 1 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Woman', 'Mother', 'Blue hair'},
 
     config = { extra = { chips_gain = 5, mult_gain = 1, chips = 0, mult = 0 } },
 
@@ -267,7 +272,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'lenny',
+    key = 'char_lenny',
     loc_txt = {
         name = 'Lenny',
         text = {
@@ -284,6 +289,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 1, y = 2 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Skinny', "Moe's", 'Man'},
 
     config = { extra = { mult = 2 } },
 
@@ -307,7 +313,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'carl',
+    key = 'char_carl',
     loc_txt = {
         name = 'Carl',
         text = {
@@ -324,6 +330,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 2, y = 2 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Skinny', "Moe's", 'Black'},
 
     config = { extra = { mult = 2 } },
 
@@ -347,7 +354,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'groening',
+    key = 'char_groening',
     loc_txt = {
         name = 'Matt Groening',
         text = {
@@ -364,6 +371,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 3, y = 2 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Man', 'Important', 'Creator'},
 
     config = { extra = { xmult = 1.3 } },
 
@@ -389,7 +397,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'santashelper',
+    key = 'char_santashelper',
     loc_txt = {
         name = "Santa's Little Helper",
         text = {
@@ -406,6 +414,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 4, y = 2 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Animal', 'Dog', 'Simpson'},
 
     config = { 
         extra = { 
@@ -512,7 +521,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'snowball2',
+    key = 'char_snowball2',
     loc_txt = {
         name = 'Snowball II',
         text = {
@@ -529,6 +538,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 5, y = 2 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Cat', 'Black', 'Simpson'},
 
     config = { extra = {  } },
 
@@ -578,6 +588,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 1, y = 3 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Man', 'Important', 'Clown'},
 
     config = { extra = { repetitions = 1 } },
     
@@ -591,7 +602,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'skinner',
+    key = 'char_skinner',
     loc_txt = {
         name = 'Principal Skinner',
         text = {
@@ -609,6 +620,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 2, y = 3 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Man', 'Head', 'School'},
 
     calculate = function(self, card, context)
         if context.final_scoring_step then
@@ -636,7 +648,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'flanders',
+    key = 'char_flanders',
     loc_txt = {
         name = 'Ned Flanders',
         text = {
@@ -653,6 +665,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 3, y = 3 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Man', 'Friendly', 'Neighbourino'},
 
     config = { extra = { odds = 3 } },
 
@@ -677,7 +690,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'burns',
+    key = 'char_burns',
     loc_txt = {
         name = 'Mr. Burns',
         text = {
@@ -695,6 +708,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 4, y = 3 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Man', 'Important', 'Old'},
 
     config = { extra = { xmult = 3, discount = -60 } },
 
@@ -736,7 +750,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'apu',
+    key = 'char_apu',
     loc_txt = {
         name = 'Apu Nahasapeemapetilon',
         text = {
@@ -754,6 +768,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 5, y = 3 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Man', 'Business Owner', 'Loves to Listen'},
 
     config = { extra = { thirdrerolls = 0, current_rerolls = 0, three = 3 } },
 
@@ -781,7 +796,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'moe',
+    key = 'char_moe',
     loc_txt = {
         name = 'Moe',
         text = {
@@ -798,6 +813,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 1, y = 4 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {"It's Moe", "It's Moe", "It's Moe"},
 
     config = { extra = { dollar_gain = 1, dollars = 1 } },
 
@@ -822,7 +838,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'abe',
+    key = 'char_abe',
     loc_txt = {
         name = 'Abe Simpson',
         text = {
@@ -839,6 +855,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 2, y = 4 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Man', 'Old', 'Simpsons'},
 
     config = { extra = { counter = 0, levels = 1 } },
 
@@ -857,7 +874,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'diamondjoe',
+    key = 'char_diamondjoe',
     loc_txt = {
         name = 'Mayor Quimby',
         text = {
@@ -874,6 +891,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 3, y = 4 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Man', 'Important', 'Mayor'},
 
     config = { extra = { repetitions = 2 } },
     
@@ -887,7 +905,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'smithers',
+    key = 'char_smithers',
     loc_txt = {
         name = 'Smithers',
         text = {
@@ -904,6 +922,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 4, y = 4 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Man', 'Loyal', 'Gay'},
 
     config = { extra = { jackrepetitions = 2, kingrepetitions = 1 } },
     
@@ -922,7 +941,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'wiggum',
+    key = 'char_wiggum',
     loc_txt = {
         name = 'Chief Wiggum',
         text = {
@@ -941,6 +960,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 5, y = 4 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Police', 'Man', 'Fat'},
 
     config = { extra = { xmult = 1, hand_type = 'Pair', xmult_gain = 0.3, me_debuffing = false } },
 
@@ -976,7 +996,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'barney',
+    key = 'char_barney',
     loc_txt = {
         name = 'Barney',
         text = {
@@ -993,6 +1013,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 1, y = 5 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {"Moe's", 'Drunk', 'Like, REALLY Drunk'},
 
     config = { extra = { repetitions = 1 } },
 
@@ -1019,7 +1040,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'hibbert',
+    key = 'char_hibbert',
     loc_txt = {
         name = 'Dr. Hibbert',
         text = {
@@ -1036,6 +1057,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 2, y = 5 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Man', 'Friendly', 'Doctor'},
 
     config = { extra = { odds = 4 } },
 
@@ -1054,7 +1076,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'milhouse',
+    key = 'char_milhouse',
     loc_txt = {
         name = 'Milhouse',
         text = {
@@ -1071,6 +1093,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 3, y = 5 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Useless', 'Unimportant', 'Friend'},
 
     config = { extra = { chip_gain = 7, chip_loss = 3 } },
 
@@ -1097,7 +1120,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'nelson',
+    key = 'char_nelson',
     loc_txt = {
         name = 'Nelson',
         text = {
@@ -1114,6 +1137,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 4, y = 5 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Boy', 'Interesting', 'Bully'},
 
     config = { extra = { mult = 5 } },
 
@@ -1137,7 +1161,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'lovejoy',
+    key = 'char_lovejoy',
     loc_txt = {
         name = 'Rev. Lovejoy',
         text = {
@@ -1154,6 +1178,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 5, y = 5 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Man', 'Important', 'Christian'},
 
     config = { extra = { cards = 3 } },
 
@@ -1185,7 +1210,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'troy',
+    key = 'char_troy',
     loc_txt = {
         name = 'Troy McClure',
         text = {
@@ -1201,6 +1226,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 1, y = 6 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Man', 'Washed', 'Famous'},
 
     in_pool = function(self, args)
         return false
@@ -1208,7 +1234,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'chalmers',
+    key = 'char_chalmers',
     loc_txt = {
         name = 'Superintendent Chalmers',
         text = {
@@ -1225,6 +1251,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 2, y = 6 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Man', 'Important', 'School'},
 
     config = { extra = { odds = 2, xmult = 1.5 } },
 
@@ -1243,7 +1270,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'ralph',
+    key = 'char_ralph',
     loc_txt = {
         name = 'Ralph Wiggum',
         text = {
@@ -1260,6 +1287,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 3, y = 6 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Boy', 'Silly', 'Likes Men Now'},
 
     config = { extra = { chip_b = 5, chip_t = 20 } },
 
@@ -1277,7 +1305,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'martin',
+    key = 'char_martin',
     loc_txt = {
         name = 'Martin',
         text = {
@@ -1294,6 +1322,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 4, y = 6 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'School', 'Boy', 'Smart'},
 
     calculate = function(self, card, context)
         if context.joker_main then
@@ -1309,7 +1338,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'spiderpig',
+    key = 'char_spiderpig',
     loc_txt = {
         name = 'Spider Pig',
         text = {
@@ -1327,6 +1356,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 5, y = 6 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Animal', 'Love', 'Movie'},
 
     config = { extra = { mult = 2, repetitions = 1 } },
 
@@ -1351,7 +1381,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'nerds',
+    key = 'char_nerds',
     loc_txt = {
         name = 'College Nerds',
         text = {
@@ -1368,6 +1398,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 1, y = 7 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'School', '"Men"', 'School!'},
 
     config = { extra = { mult = 3 } },
 
@@ -1394,7 +1425,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'hutz',
+    key = 'char_hutz',
     loc_txt = {
         name = 'Lionel Hutz',
         text = {
@@ -1412,6 +1443,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 2, y = 7 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Man', '"Important"', '"Smart"'},
 
     config = { extra = { suit = 'Hearts' } },
 
@@ -1469,7 +1501,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'willie',
+    key = 'char_willie',
     loc_txt = {
         name = 'Groundskeeper Willie',
         text = {
@@ -1486,6 +1518,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 3, y = 7 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Man', 'Blue-Collar', 'School'},
 
     config = { extra = { dollars = 2 } },
 
@@ -1512,7 +1545,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'grimey',
+    key = 'char_grimey',
     loc_txt = {
         name = 'Frank Grimes',
         text = {
@@ -1531,6 +1564,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 4, y = 7 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Man', 'Subversive', 'Power Plant'},
 
     config = { extra = { mult = 3, exponent = 1.2, max = 60 } },
 
@@ -1557,7 +1591,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'bob',
+    key = 'char_bob',
     loc_txt = {
         name = 'Sideshow Bob',
         text = {
@@ -1575,6 +1609,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 5, y = 7 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Man', 'Dangerous', 'Rake'},
 
     config = { extra = { mult_gain = 6, mult = 0 } },
 
@@ -1598,7 +1633,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'nick',
+    key = 'char_nick',
     loc_txt = {
         name = 'Dr. Nick',
         text = {
@@ -1617,6 +1652,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 1, y = 8 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Doctor', 'Dangerous', 'Cheap'},
 
     config = { extra = { odds = 3, discount = 35 } },
 
@@ -1661,7 +1697,7 @@ SMODS.Joker {
 
 
 SMODS.Joker {
-    key = 'comicbook',
+    key = 'char_comicbook',
     loc_txt = {
         name = 'Comic Book Guy',
         text = {
@@ -1679,6 +1715,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 2, y = 8 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Loser', 'Man', 'Comics'},
 
     config = { extra = { sell_value = 2, dollars = 3 } },
 
@@ -1711,7 +1748,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'fat_tony',
+    key = 'char_fat_tony',
     loc_txt = {
         name = 'Fat Tony',
         text = {
@@ -1728,6 +1765,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 3, y = 8 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Dangerous', 'Man', 'Important'},
 
     config = { extra = { odds = 4, dollars = 4 } },
 
@@ -1757,7 +1795,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'moleman',
+    key = 'char_moleman',
     loc_txt = {
         name = 'Hans Moleman',
         text = {
@@ -1774,6 +1812,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 4, y = 8 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Small', 'Old', 'Like, REALLY Old'},
 
     config = { extra = { percent = 35 } },
 
@@ -1796,7 +1835,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'mel',
+    key = 'char_mel',
     loc_txt = {
         name = 'Sideshow Mel',
         text = {
@@ -1814,7 +1853,8 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 5, y = 8 },
     pools = { ['SpringfieldJokers'] = true },
-
+    hints = {'Man', 'Partner', 'Clown'},
+    
     config = { extra = { xmult = 1.6, xmult_loss = 0.05 } },
 
     loc_vars = function(self, info_queue, card)
@@ -1838,7 +1878,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'brockman',
+    key = 'char_brockman',
     loc_txt = {
         name = 'Kent Brockman',
         text = {
@@ -1857,6 +1897,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 1, y = 9 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Man', 'Important', 'News'},
 
     config = { extra = { dollars = 1, dollar_gain = 1, discards = 15, discards_remaining = 15 } },
 
@@ -1886,7 +1927,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'frink',
+    key = 'char_frink',
     loc_txt = {
         name = 'Professor Frink',
         text = {
@@ -1904,6 +1945,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 2, y = 9 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Man', 'Smart', 'Weird'},
 
     config = { extra = { chips = 0, chip_gain = 7 } },
 
@@ -1927,7 +1969,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'bluehair',
+    key = 'char_bluehair',
     loc_txt = {
         name = 'Blue Haired Lawyer',
         text = {
@@ -1943,6 +1985,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 3, y = 9 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Man', 'Important', 'Law'},
 
     config = { extra = { dollars = 1 } },
 
@@ -1960,7 +2003,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'wolfcastle',
+    key = 'char_wolfcastle',
     loc_txt = {
         name = 'Rainier Wolfcastle',
         text = {
@@ -1977,6 +2020,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 4, y = 9 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Man', 'Important', 'Actor'},
 
     config = { extra = { mult = 15 } },
 
@@ -1995,7 +2039,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'rodntodd',
+    key = 'char_rodntodd',
     loc_txt = {
         name = 'Rod and Todd',
         text = {
@@ -2014,6 +2058,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 5, y = 9 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Kids', 'Friendly', 'Neighbourino'},
 
     config = { extra = { mult_gain = 1, mult = 0 } },
 
@@ -2049,7 +2094,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'bleedinggums',
+    key = 'char_bleedinggums',
     loc_txt = {
         name = 'Bleeding Gums Murphy',
         text = {
@@ -2069,6 +2114,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 6, y = 1 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Friendly', 'Music', 'Man'},
 
     config = { extra = { odds = 5, mult = 5, mult_min = 1, mult_max = 4 } },
     loc_vars = function(self, info_queue, card)
@@ -2103,7 +2149,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'mother',
+    key = 'char_mother',
     loc_txt = {
         name = 'Mona Simpson',
         text = {
@@ -2120,6 +2166,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 7, y = 1 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Mother', 'Friendly', 'Simpson'},
 
     config = { extra = { chips = 30 } },
     loc_vars = function(self, info_queue, card)
@@ -2148,7 +2195,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'itchy_scratchy',
+    key = 'char_itchy_scratchy',
     loc_txt = {
         name = 'Itchy & Scratchy',
         text = {
@@ -2166,6 +2213,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 8, y = 1 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Animals', 'Dangerous', 'Cartoon'},
 
     config = { extra = { mult = 0, mult_gain = 1 } },
 
@@ -2189,7 +2237,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'jackson',
+    key = 'char_jackson',
     loc_txt = {
         name = 'Michael Jackson',
         text = {
@@ -2209,6 +2257,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 9, y = 1 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Man', 'Odd', 'Crazy'},
 
     config = { extra = { suit = 'Diamonds' } },
 
@@ -2258,7 +2307,7 @@ SMODS.Joker { --dummy
 }
 
 SMODS.Joker {
-    key = 'herb',
+    key = 'char_herb',
     loc_txt = {
         name = 'Uncle Herb',
         text = {
@@ -2277,6 +2326,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 10, y = 1 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Cars', 'Business', 'Brother'},
 
     config = { extra = { mult = 4, mult_gain = 2, dollars = -4 } },
 
@@ -2307,7 +2357,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'otto',
+    key = 'char_otto',
     loc_txt = {
         name = 'Otto',
         text = {
@@ -2324,6 +2374,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 6, y = 2 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Man', 'Freaky', 'School'},
 
     config = { extra = { dollars = 1 } },
 
@@ -2350,7 +2401,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'krabappel',
+    key = 'char_krabappel',
     loc_txt = {
         name = 'Mrs. Krabappel',
         text = {
@@ -2368,6 +2419,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 7, y = 2 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Woman', 'Tired', 'School'},
 
     config = { extra = { chips = 0, chip_gain = 3 } },
 
@@ -2391,7 +2443,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'hoover',
+    key = 'char_hoover',
     loc_txt = {
         name = 'Miss Hoover',
         text = {
@@ -2409,6 +2461,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 8, y = 2 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Woman', 'Lisa', 'School'},
 
     config = { extra = { chips = 0, chip_gain = 7 } },
 
@@ -2432,7 +2485,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'agnes',
+    key = 'char_agnes',
     loc_txt = {
         name = 'Agnes Skinner',
         text = {
@@ -2453,6 +2506,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 9, y = 2 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Mother', 'Old', 'School'},
 
     config = { extra = { xmult_good = 2, xmult_bad = 0.7, hand = 'Pair' } },
 
@@ -2478,7 +2532,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'cleetus',
+    key = 'char_cleetus',
     loc_txt = {
         name = 'Cletus the Slack Jawed Yokel',
         text = {
@@ -2496,6 +2550,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 10, y = 2 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Man', 'Stupid', 'Family'},
 
     config = { extra = { chip_gain = 4, chips = 0 } },
 
@@ -2519,7 +2574,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'chester',
+    key = 'char_chester',
     loc_txt = {
         name = 'Chester Lampwick',
         text = {
@@ -2538,6 +2593,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 6, y = 3 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Cartoon', 'Important', 'Old'},
 
     config = { extra = { card_size = 4 } },
 
@@ -2564,7 +2620,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'patty',
+    key = 'char_patty',
     loc_txt = {
         name = 'Patty',
         text = {
@@ -2581,6 +2637,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 7, y = 3 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Sister', 'Grumpy', 'Cigarettes'},
 
     config = { extra = { mult = 2 } },
 
@@ -2614,7 +2671,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'selma',
+    key = 'char_selma',
     loc_txt = {
         name = 'Selma',
         text = {
@@ -2631,6 +2688,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 8, y = 3 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Sister', 'Grumpy', 'Cigarettes'},
 
     config = { extra = { chips = 15 } },
 
@@ -2664,7 +2722,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'helen',
+    key = 'char_helen',
     loc_txt = {
         name = 'Helen Lovejoy',
         text = {
@@ -2683,6 +2741,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 9, y = 3 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Woman', 'Important', 'Church'},
 
     config = { extra = { mult_gain = 0.5, rank = 7 } },
 
@@ -2731,7 +2790,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'mccallister',
+    key = 'char_mccallister',
     loc_txt = {
         name = 'Captain McCallister',
         text = {
@@ -2749,6 +2808,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 10, y = 3 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Man', 'Hard', 'Sea'},
 
     config = { extra = { xmult = 3, xmult_loss = 0.25 } },
 
@@ -2777,7 +2837,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'scorpio',
+    key = 'char_scorpio',
     loc_txt = {
         name = 'Hank Scorpio',
         text = {
@@ -2794,6 +2854,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 6, y = 4 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Man', 'Important', 'Crazy'},
 
     config = { extra = { dollars = 2 } },
 
@@ -2811,7 +2872,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'meyers',
+    key = 'char_meyers',
     loc_txt = {
         name = 'Roger Meyers Jr.',
         text = {
@@ -2831,6 +2892,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 7, y = 4 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Cartoon', 'Important', 'Business'},
 
     config = { extra = { odds = 3, dollars = 4, dollar_gain = 1 } },
 
@@ -2858,7 +2920,7 @@ SMODS.Joker {
 SMODS.Sound({key = "planet", path = "planet-needs.mp3",})
 
 SMODS.Joker {
-    key = 'poochie',
+    key = 'char_poochie',
     loc_txt = {
         name = 'Poochie',
         text = {
@@ -2878,6 +2940,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 8, y = 4 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Cartoon', 'Cool', 'Animal'},
 
     config = { extra = { odds = 4, mult = 21 } },
 
@@ -2916,7 +2979,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'duffman',
+    key = 'char_duffman',
     loc_txt = {
         name = 'Duff Man',
         text = {
@@ -2934,6 +2997,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 9, y = 4 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Cool', 'Mascot', 'Man'},
 
     config = { extra = { mult = 0, mult_gain = 3 } },
     loc_vars = function(self, info_queue, card)
@@ -2958,7 +3022,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'discostu',
+    key = 'char_discostu',
     loc_txt = {
         name = 'Disco Stu',
         text = {
@@ -2977,6 +3041,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 10, y = 4 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Cool', 'Music', 'Man'},
 
     config = { extra = { chips = 10 } },
 
@@ -3018,7 +3083,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'snake',
+    key = 'char_snake',
     loc_txt = {
         name = 'Snake',
         text = {
@@ -3035,6 +3100,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 6, y = 5 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Dangerous', 'Criminal', 'Man'},
 
     config = { extra = { levels = 2, dollars = 10 } },
 
@@ -3061,7 +3127,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'jimbojones',
+    key = 'char_jimbojones',
     loc_txt = {
         name = 'Jimbo Jones',
         text = {
@@ -3080,6 +3146,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 7, y = 5 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'School', 'Gang', 'Bully'},
 
     config = { extra = { dollars = 2 } },
 
@@ -3106,7 +3173,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'kearney',
+    key = 'char_kearney',
     loc_txt = {
         name = 'Kearney Matthew Zzyzwicz, Sr.',
         text = {
@@ -3123,6 +3190,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 8, y = 5 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'School', 'Gang', 'Bully'},
 
     config = { extra = { xmult = 2, destroyed = false } },
 
@@ -3148,7 +3216,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'dolph',
+    key = 'char_dolph',
     loc_txt = {
         name = 'Dolph Starbeam',
         text = {
@@ -3166,6 +3234,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 9, y = 5 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'School', 'Gang', 'Bully'},
 
     config = { extra = { dollars = 3, cards = 2, counter = 0 } },
 
@@ -3200,7 +3269,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'herman',
+    key = 'char_herman',
     loc_txt = {
         name = 'Herman',
         text = {
@@ -3219,6 +3288,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 10, y = 5 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Dangerous', 'Business', 'Man'},
 
     config = { extra = { chips_gain = 2, chips = 0 } },
 
@@ -3243,7 +3313,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'lou',
+    key = 'char_lou',
     loc_txt = {
         name = 'Officer Lou',
         text = {
@@ -3262,6 +3332,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 6, y = 6 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Police', 'Man', 'Strong'},
 
     config = { extra = { mult_gain = 1, mult = 0, hand_type = 'Three of a Kind', hand_type_2 = 'Flush' } },
 
@@ -3298,7 +3369,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'eddie',
+    key = 'char_eddie',
     loc_txt = {
         name = 'Officer Eddie',
         text = {
@@ -3316,6 +3387,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 7, y = 6 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Police', 'Man', 'Dumb'},
 
     config = { extra = { difference = 0.1, xmult = 1 } },
 
@@ -3348,7 +3420,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'snyder',
+    key = 'char_snyder',
     loc_txt = {
         name = 'Judge Snyder',
         text = {
@@ -3367,6 +3439,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 8, y = 6 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Important', 'Law', 'Rich'},
 
     config = { extra = { dollars = 6, hand = 'Pair' } },
 
@@ -3407,7 +3480,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'louie',
+    key = 'char_louie',
     loc_txt = {
         name = 'Louie',
         text = {
@@ -3427,6 +3500,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 9, y = 6 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Dangerous', 'Gang', 'Criminal'},
 
     config = { extra = { dollars = 2 } },
 
@@ -3474,7 +3548,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'marvin',
+    key = 'char_marvin',
     loc_txt = {
         name = 'Dr. Marvin Monroe',
         text = {
@@ -3492,6 +3566,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 10, y = 6 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Doctor', 'Man', 'Dead'},
 
     config = { extra = {  } },
 
@@ -3531,7 +3606,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'bumblebee',
+    key = 'char_bumblebee',
     loc_txt = {
         name = 'Bumblebee Man',
         text = {
@@ -3549,6 +3624,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 6, y = 7 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Funny', 'Actor', '"Animal"'},
 
     config = { extra = { mult = 3, chips = 20, suit1 = 'Spades', suit2 = 'Diamonds' } },
 
@@ -3581,7 +3657,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'gil',
+    key = 'char_gil',
     loc_txt = {
         name = 'Gil Gunderson',
         text = {
@@ -3599,6 +3675,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 7, y = 7 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Business', 'Desperate', 'Man'},
 
     config = { extra = { dollars = 2 } },
 
@@ -3616,7 +3693,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'squeaky',
+    key = 'char_squeaky',
     loc_txt = {
         name = 'Squeaky Voiced Teen',
         text = {
@@ -3636,6 +3713,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 8, y = 7 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Young', 'Business', 'Boy'},
 
     config = { extra = { odds = 3, dollars = 1, dollars_bonus = 10 } },
 
@@ -3654,7 +3732,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'jacqueline',
+    key = 'char_jacqueline',
     loc_txt = {
         name = 'Jacqueline Bouvier',
         text = {
@@ -3671,6 +3749,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 9, y = 7 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Mother', 'Old', 'Hair'},
 
     config = { extra = { odds = 2, xmult = 1.6 } },
 
@@ -3690,7 +3769,7 @@ SMODS.Joker {
 
 
 SMODS.Joker {
-    key = 'jasper',
+    key = 'char_jasper',
     loc_txt = {
         name = 'Jasper Beardley',
         text = {
@@ -3708,6 +3787,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 10, y = 7 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Old', 'Man', 'Paddle'},
 
     config = { extra = { xmult = 2, dollars = 5 } },
 
@@ -3731,7 +3811,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'luigi',
+    key = 'char_luigi',
     loc_txt = {
         name = 'Luigi Risotto',
         text = {
@@ -3750,6 +3830,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 6, y = 8 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Business', 'Stereotype', 'Food'},
 
     config = { extra = { chips = SIMPSON_DOLLARS_SPENT, chip_gain = 1 } },
 
@@ -3767,7 +3848,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'maude',
+    key = 'char_maude',
     loc_txt = {
         name = 'Maude Flanders',
         text = {
@@ -3786,6 +3867,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 7, y = 8 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Mother', 'Dead', 'Neighbourino'},
 
     config = { extra = { mult = 0, mult_gain = 4 } },
 
@@ -3811,7 +3893,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'god',
+    key = 'char_god',
     loc_txt = {
         name = 'God',
         text = {
@@ -3829,6 +3911,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 8, y = 8 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'He Must Have Deserved It', 'Creator of All Things', 'Has Big Feet'},
 
     config = { extra = { xmult_gain = 0.2 } },
 
@@ -3849,7 +3932,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'lurleen',
+    key = 'char_lurleen',
     loc_txt = {
         name = 'Lurleen',
         text = {
@@ -3869,6 +3952,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 9, y = 8 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Music', 'Woman', 'Desperate'},
 
     config = { extra = { xmult = 2.5, xmult_loss = 0.5 } },
 
@@ -3896,7 +3980,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'mindy',
+    key = 'char_mindy',
     loc_txt = {
         name = 'Mindy Simmons',
         text = {
@@ -3914,6 +3998,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 10, y = 8 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Subversive', 'Power Plant', 'Woman'},
 
     config = { extra = { xmult = 2 } },
 
@@ -3981,7 +4066,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'blinky',
+    key = 'char_blinky',
     loc_txt = {
         name = 'Blinky the Fish',
         text = {
@@ -3999,6 +4084,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 6, y = 9 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Animal', 'Sea', 'Power Plant'},
 
     config = { extra = { type = 'Three of a Kind' } },
 
@@ -4030,7 +4116,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'squirrel',
+    key = 'char_squirrel',
     loc_txt = {
         name = 'Mutated Squirrel',
         text = {
@@ -4049,6 +4135,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 7, y = 9 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Animal', 'Power Plant', 'Movie'},
 
     config = { extra = { mult = 2 } },
 
@@ -4090,7 +4177,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'krustofsky',
+    key = 'char_krustofsky',
     loc_txt = {
         name = 'Rabbi Hyman Krustofsky',
         text = {
@@ -4109,6 +4196,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 8, y = 9 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Father', 'Religious', 'Old'},
 
     config = { extra = { xmult = 0.3, amount = 3 } },
 
@@ -4127,7 +4215,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'jewish_man',
+    key = 'char_jewish_man',
     loc_txt = {
         name = 'Old Jewish Man',
         text = {
@@ -4145,6 +4233,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 9, y = 9 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Religious?', 'Old', 'Man'},
 
     config = { extra = { odds = 3, amount = 2 } },
 
@@ -4192,7 +4281,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = 'jebidiah',
+    key = 'char_jebidiah',
     loc_txt = {
         name = 'Jebidiah Springfield',
         text = {
@@ -4210,6 +4299,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 10, y = 9 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'Father', 'Important', 'Dead'},
 
     config = { extra = { odds = 4 } },
 
@@ -4254,6 +4344,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 0, y = 0 },
     pools = { ['SpringfieldJokers'] = true },
+    hints = {'1', '2', '3'},
 
     config = { extra = {  } },
 
@@ -4266,3 +4357,109 @@ SMODS.Joker {
     end
 }
 ]]
+
+
+
+SMODS.Joker {
+    key = 'who_shot',
+    loc_txt = {
+        name = 'Who Shot Mr. Burns?',
+        text = {
+            'Perpetrator: {C:attention}#1#{}',
+            'Hint: {C:attention}#2#{}',
+            'Hint: {C:attention}#3#{}',
+            'Hint: {C:attention}#4#{}',
+            '---',
+            'Find the perp for {X:red,C:white}X#5#{} Mult',
+            '{C:attention}+#6#{} card slot available in shop',
+            '{C:inactive}Hints given at the end',
+            '{C:inactive}of a Boss Blind'
+        }
+    },
+    blueprint_compat = true,
+    rarity = 2,
+    cost = 6,
+    discovered = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    atlas = 'SimpsJokers',
+    pos = { x = 0, y = 0 },
+    pools = { ['SpringfieldJokers'] = true },
+
+    config = { extra = { perp = '???', hints = {'???', '???', '???'}, xmult = 3, real_perp = nil, found = false, real_hints = {}, count = 1, shop_size = 1 } },
+
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.perp, card.ability.extra.hints[1], card.ability.extra.hints[2], card.ability.extra.hints[3], card.ability.extra.xmult, card.ability.extra.shop_size } }
+    end,
+
+    calculate = function (self, card, context)
+        if context.joker_main and card.ability.extra.found then
+            return { xmult = card.ability.extra.xmult }
+        end
+        if context.end_of_round and context.game_over == false and context.main_eval then
+            if card.ability.extra.count < 4  and G.GAME.blind.boss and card.ability.extra.found == false then
+                local available = {}
+                for i = 1, #card.ability.extra.hints do
+                    if card.ability.extra.hints[i] == '???' then
+                        available[#available + 1] = i
+                    end
+                end
+                local selected_slot = pseudorandom_element(available, 'shot_dead')
+                local unused_hints = {}
+                for i = 1, #card.ability.extra.hints do
+                    for p = 1, #card.ability.extra.real_hints do
+                        if card.ability.extra.hints[i] ~= card.ability.extra.real_hints[p] then
+                            unused_hints[#unused_hints + 1] = card.ability.extra.real_hints[p]
+                        end
+                    end
+                end
+                local selected_hint = pseudorandom_element(unused_hints, 'shot_with_own_gun')
+                card.ability.extra.hints[selected_slot] = selected_hint
+                card.ability.extra.count = card.ability.extra.count + 1
+                return {
+                    message = 'Update!'
+                }
+            end
+        end
+    end,
+
+    add_to_deck = function(self, card, from_debuff)
+        if card.ability.extra.real_perp == nil then
+            local jokers = {}
+            local rarities = {'Common', 'Common', 'Common', 'Common', 'Uncommon', 'Uncommon','Uncommon', 'Rare' }
+            local rarity = pseudorandom_element(rarities, 'mrbruns')
+            for i = 1, #SMODS.get_clean_pool('Joker', rarity) do
+                if string.find(SMODS.get_clean_pool('Joker', rarity)[i], "j_simpson_char") then
+                    jokers[#jokers + 1] = SMODS.get_clean_pool('Joker', rarity)[i]
+                end
+            end
+            card.ability.extra.real_perp = pseudorandom_element(jokers, 'mrbruns')
+            print(card.ability.extra.real_perp)
+            card.ability.extra.real_hints = G.P_CENTERS[card.ability.extra.real_perp].hints
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    change_shop_size(card.ability.extra.shop_size)
+                    return true
+                end
+            }))
+        end
+    end,
+
+    remove_from_deck = function(self, card, from_debuff)
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                change_shop_size(-card.ability.extra.shop_size)
+                return true
+            end
+        }))
+    end,
+
+    update = function(self, card, dt)
+        if card.ability.extra.found == false and next(SMODS.find_card(card.ability.extra.real_perp)) then
+            card.ability.extra.found = true
+            card.ability.extra.perp = G.P_CENTERS[card.ability.extra.real_perp].loc_txt.name
+            SMODS.calculate_effect({message = "Found them!"}, card)
+            print('Found it!')
+        end
+    end
+}
