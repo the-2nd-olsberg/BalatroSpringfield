@@ -492,6 +492,7 @@ SMODS.Consumable {
     discovered = true,
     config = { extra = { cards = 2 } },
     loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_SEALS['simpson_pollution']
         return { vars = { card.ability.extra.cards, colours = {HEX("bfae00")} } }
     end,
     use = function(self, card, area, copier)

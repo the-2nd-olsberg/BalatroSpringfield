@@ -402,7 +402,8 @@ SMODS.Joker {
         name = "Santa's Little Helper",
         text = {
             'Faster you play your',
-            'hand the better'
+            'hand the better {C:red}Mult{}',
+            'you receive!'
         }
     },
     blueprint_compat = true,
@@ -1067,11 +1068,13 @@ SMODS.Joker {
     end,
 
     calculate = function (self, card, context)
-        if context.cardarea == G.play and context.individual and context.other_card and not context.blueprint then
-            if SMODS.pseudorandom_probability(card, "hibbert", 1, card.ability.extra.odds) and not context.other_card:get_seal() then
-                context.other_card:set_seal(SMODS.poll_seal({key = 'supercharge', guaranteed = true}), nil, true)
+        if context.before and not context.blueprint then
+            for i = 1, #context.scoring_hand do
+                if SMODS.pseudorandom_probability(card, "hibbert", 1, card.ability.extra.odds) and not context.scoring_hand[i]:get_seal() then
+                    context.scoring_hand[i]:set_seal(SMODS.poll_seal({key = 'supercharge', guaranteed = true}), nil, true)
+                end
             end
-        end        
+        end
     end
 }
 
@@ -4326,6 +4329,364 @@ SMODS.Joker {
     end
 }
 
+SMODS.Joker {
+    key = 'char_artie',
+    loc_txt = {
+        name = 'Artie Ziff',
+        text = {
+            '{C:attention}Queens{} give {C:red}+#1#{} Mult',
+            'when scored'
+        }
+    },
+    blueprint_compat = true,
+    rarity = 1,
+    cost = 5,
+    discovered = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    atlas = 'SimpsJokers',
+    pos = { x = 11, y = 1 },
+    pools = { ['SpringfieldJokers'] = true },
+    hints = {'Man', 'Rival', 'Love Interest'},
+
+    config = { extra = { mult = 4 } },
+
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.mult } }
+    end,
+
+    calculate = function (self, card, context)
+        if context.individual and context.cardarea == G.play and context.other_card:get_id() == 12 then
+            return {
+                mult = card.ability.extra.mult
+            }
+        end
+    end
+}
+
+SMODS.Joker {
+    key = 'char_baby_gerald',
+    loc_txt = {
+        name = 'Baby Gerald',
+        text = {
+            '{C:attention}Mult{} Cards give {C:chips}+#1#',
+            'Chips when scored'
+        }
+    },
+    blueprint_compat = true,
+    rarity = 1,
+    cost = 4,
+    discovered = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    atlas = 'SimpsJokers',
+    pos = { x = 12, y = 1 },
+    pools = { ['SpringfieldJokers'] = true },
+    hints = {'Baby', 'Dangerous', 'Rival'},
+
+    config = { extra = { chips = 40 } },
+
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_CENTERS['m_mult']
+        return { vars = { card.ability.extra.chips } }
+    end,
+
+    calculate = function (self, card, context)
+        if context.individual and context.cardarea == G.play and context.other_card.config.center.key == 'm_mult' then
+            return {
+                chips = card.ability.extra.chips
+            }
+        end
+    end
+}
+
+SMODS.Joker {
+    key = 'char_laddie',
+    loc_txt = {
+        name = 'Laddie',
+        text = {
+            'Get a random {C:purple}Tarot{}, {C:planet}Planet{},',
+            '{C:spectral}Spectral{}, or {V:1}Simpsons Trading{}',
+            'Card when selecting a {C:attention}Blind'
+        }
+    },
+    blueprint_compat = true,
+    rarity = 2,
+    cost = 6,
+    discovered = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    atlas = 'SimpsJokers',
+    pos = { x = 13, y = 1 },
+    pools = { ['SpringfieldJokers'] = true },
+    hints = {'Dog', 'Rival', 'Pretty'},
+
+    config = { extra = {  } },
+
+    loc_vars = function(self, info_queue, card)
+        return { vars = { colours = { HEX(G_C_SIMPSONS_TRADING_CARD) } } }
+    end,
+
+    calculate = function (self, card, context)
+        if context.setting_blind and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+            local types = {'Tarot', 'Planet', 'Spectral', 'SimpsonsTrading'}
+            local names = {'Tarot  Card', 'Planet  Card', 'Spectral  Card', 'Simpsons Trading Card'}
+            local colours = {G.C.PURPLE, G.C.PLANET, G.C.SPECTRAL, HEX(G_C_SIMPSONS_TRADING_CARD)}
+            local i = pseudorandom('laddiebestdogever', 1, #types)
+            print(types[i])
+            G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+            G.E_MANAGER:add_event(Event({
+                func = (function()
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            SMODS.add_card { set = types[i], }
+                            G.GAME.consumeable_buffer = 0
+                            return true
+                        end
+                    }))
+                    SMODS.calculate_effect({ message = '+1 '..names[i], colour = colours[i] }, context.blueprint_card or card)
+                    return true
+                end)
+            }))
+            return nil, true 
+        end
+    end
+}
+
+SMODS.Joker {
+    key = 'char_lyle',
+    loc_txt = {
+        name = 'Lyle Lanley',
+        text = {
+            '{C:green}#1# in #2#{} chance to destroy each',
+            'purchased {C:purple}Tarot{} or {C:planet}Planet{} Card',
+            'and gain {X:red,C:white}X#3#{} Mult',
+            '{C:inactive}(Currently{} {X:red,C:white}X#4#{} {C:inactive}Mult){}',
+        }
+    },
+    blueprint_compat = true,
+    rarity = 3,
+    cost = 6,
+    discovered = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    atlas = 'SimpsJokers',
+    pos = { x = 14, y = 1 },
+    pools = { ['SpringfieldJokers'] = true },
+    hints = {'Con-man', 'Business', 'Rival'},
+
+    config = { extra = { odds = 2, xmult_gain = 0.4, xmult = 1 } },
+
+    loc_vars = function(self, info_queue, card)
+        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'lyle')
+        return { vars = { numerator, denominator, card.ability.extra.xmult_gain, card.ability.extra.xmult } }
+    end,
+
+    calculate = function (self, card, context)
+        if context.buying_card and not context.blueprint and context.card.ability and context.card.ability.set ~= 'Voucher' and context.card.ability.set ~= 'Booster' then
+            if SMODS.pseudorandom_probability(card, "lyle", 1, card.ability.extra.odds) and (context.card.ability.set == 'Tarot' or context.card.ability.set == 'Planet') then
+                SMODS.destroy_cards(context.card)
+                card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_gain
+                return {
+                    message = 'Upgrade!',
+                    colour = G.C.RED
+                }
+            end
+        end
+        if context.joker_main then
+            return {
+                xmult = card.ability.extra.xmult
+            }
+        end
+    end
+}
+
+SMODS.Joker {
+    key = 'char_cargill',
+    loc_txt = {
+        name = 'Russ Cargill',
+        text = {
+            '{C:green}#1# in #2#{} chance for',
+            'each played {C:attention}unsealed{} card to',
+            'be given a {V:1}Pollution{} Seal after play',
+            'Retrigger all cards with a {V:1}Pollution{} Seal'
+        }
+    },
+    blueprint_compat = true,
+    rarity = 2,
+    cost = 6,
+    discovered = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    atlas = 'SimpsJokers',
+    pos = { x = 15, y = 1 },
+    pools = { ['SpringfieldJokers'] = true },
+    hints = {'Important', 'Government', 'Dangerous'},
+
+    config = { extra = { odds = 3 } },
+
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_SEALS['simpson_pollution']
+        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'cargill')
+        return { vars = { numerator, denominator, colours = {HEX("bfae00")} } }
+    end,
+
+    calculate = function (self, card, context)
+        if context.repetition and context.cardarea == G.play and context.other_card.seal and context.other_card.seal == 'simpson_pollution' then
+            return {
+                repetitions = 1
+            }
+        end
+        if context.final_scoring_step and not context.blueprint then
+            G.E_MANAGER:add_event(Event({
+                func = (function()
+                    for i = 1, #context.full_hand do
+                        if SMODS.pseudorandom_probability(card, "cargill", 1, card.ability.extra.odds) and not context.full_hand[i].seal then
+                            context.full_hand[i]:set_seal('simpson_pollution')
+                        end
+                    end
+                    return true
+                end)
+            }))
+        end
+    end
+}
+
+SMODS.Joker {
+    key = 'char_crazy_cat',
+    loc_txt = {
+        name = 'Crazy Cat Lady',
+        text = {
+            '{X:red,C:white}X#1#{} for every {C:attention}enhanced',
+            'card in your deck',
+            '{C:inactive}(Currently{} {X:red,C:white}X#2#{} {C:inactive}Mult){}',
+        }
+    },
+    blueprint_compat = true,
+    rarity = 2,
+    cost = 6,
+    discovered = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    atlas = 'SimpsJokers',
+    pos = { x = 11, y = 2 },
+    pools = { ['SpringfieldJokers'] = true },
+    hints = {'Crazy', 'Woman', 'Cats'},
+
+    config = { extra = { xmult_gain = 0.05 } },
+
+    loc_vars = function(self, info_queue, card)
+        local enhanced_tally = 0
+        if G.playing_cards then
+            for _, playing_card in ipairs(G.playing_cards) do
+                if playing_card.config.center.key ~= 'c_base' then 
+                    enhanced_tally = enhanced_tally + 1 
+                end
+            end
+        end
+        return { vars = { card.ability.extra.xmult_gain, (enhanced_tally * card.ability.extra.xmult_gain) + 1 } }
+    end,
+
+    calculate = function (self, card, context)
+        if context.joker_main then
+            local enhanced_tally = 0
+            if G.playing_cards then
+                for _, playing_card in ipairs(G.playing_cards) do
+                    if playing_card.config.center.key ~= 'c_base' then 
+                        enhanced_tally = enhanced_tally + 1 
+                    end
+                end
+            end
+            return {
+                xmult = (enhanced_tally * card.ability.extra.xmult_gain) + 1
+            }
+        end
+    end,
+
+    in_pool = function(self, args)
+        for _, playing_card in ipairs(G.playing_cards) do
+            if playing_card.config.center.key ~= 'c_base' then 
+                return true
+            end
+        end
+        return false
+    end
+}
+
+SMODS.Joker {
+    key = 'char_sherri',
+    loc_txt = {
+        name = 'Sherri and Terri',
+        text = {
+            'Earn {C:money}$#1#{} if',
+            'played hand contains',
+            'a {C:attention}Pair{}'
+        }
+    },
+    blueprint_compat = true,
+    rarity = 1,
+    cost = 5,
+    discovered = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    atlas = 'SimpsJokers',
+    pos = { x = 12, y = 2 },
+    pools = { ['SpringfieldJokers'] = true },
+    hints = {'Twins', 'School', 'Girl'},
+
+    config = { extra = { dollars = 2 } },
+
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.dollars } }
+    end,
+
+    calculate = function (self, card, context)
+        if context.before and next(context.poker_hands['Pair']) then
+            return {
+                dollars = card.ability.extra.dollars
+            }
+        end
+    end
+}
+
+SMODS.Joker {
+    key = 'char_doris',
+    loc_txt = {
+        name = 'Lunchlady Doris',
+        text = {
+            'All cards in hand get',
+            'a random {C:attention}Seal{} on the {C:attention}final',
+            'hand of round'
+        }
+    },
+    blueprint_compat = true,
+    rarity = 3,
+    cost = 7,
+    discovered = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    atlas = 'SimpsJokers',
+    pos = { x = 13, y = 2 },
+    pools = { ['SpringfieldJokers'] = true },
+    hints = {'School', 'Food', 'Blue-Collar'},
+
+    config = { extra = {  } },
+
+    loc_vars = function(self, info_queue, card)
+        return { vars = {  } }
+    end,
+
+    calculate = function (self, card, context)
+        if context.before and not context.blueprint and G.GAME.current_round.hands_left == 0 then
+            for i = 1, #context.scoring_hand do
+                if not context.scoring_hand[i]:get_seal() then
+                    context.scoring_hand[i]:set_seal(SMODS.poll_seal({key = 'supercharge', guaranteed = true}), nil, true)
+                end
+            end
+        end
+    end
+}
+
 --[[
 SMODS.Joker {
     key = '',
@@ -4396,7 +4757,7 @@ SMODS.Joker {
         if context.joker_main and card.ability.extra.found then
             return { xmult = card.ability.extra.xmult }
         end
-        if context.end_of_round and context.game_over == false and context.main_eval then
+        if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint then
             if card.ability.extra.count < 4  and G.GAME.blind.boss and card.ability.extra.found == false then
                 local available = {}
                 for i = 1, #card.ability.extra.hints do
