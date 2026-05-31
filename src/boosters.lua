@@ -32,7 +32,7 @@ SMODS.Booster {
         ease_background_colour_blind(G.STATES.BUFFOON_PACK)
     end,
     create_card = function(self, card, i)
-        return { set = "SpringfieldJokers", area = G.pack_cards, skip_materialize = true, soulable = true, key_append = "sprungfeld" }
+        return { set = "SpringfieldJokers", area = G.pack_cards, skip_materialize = true, soulable = false, key_append = "sprungfeld" }
     end,
 }
 
@@ -62,7 +62,7 @@ SMODS.Booster {
         ease_background_colour_blind(G.STATES.BUFFOON_PACK)
     end,
     create_card = function(self, card, i)
-        return { set = "SpringfieldJokers", area = G.pack_cards, skip_materialize = true, soulable = true, key_append = "sprungfeld" }
+        return { set = "SpringfieldJokers", area = G.pack_cards, skip_materialize = true, soulable = false, key_append = "sprungfeld" }
     end,
 }
 
@@ -92,7 +92,7 @@ SMODS.Booster {
         ease_background_colour_blind(G.STATES.BUFFOON_PACK)
     end,
     create_card = function(self, card, i)
-        return { set = "SpringfieldJokers", area = G.pack_cards, skip_materialize = true, soulable = true, key_append = "sprungfeld" }
+        return { set = "SpringfieldJokers", area = G.pack_cards, skip_materialize = true, soulable = false, key_append = "sprungfeld" }
     end,
 }
 
@@ -122,7 +122,7 @@ SMODS.Booster {
         ease_background_colour_blind(G.STATES.BUFFOON_PACK)
     end,
     create_card = function(self, card, i)
-        return { set = "SpringfieldJokers", area = G.pack_cards, skip_materialize = true, soulable = true, key_append = "sprungfeld" }
+        return { set = "SpringfieldJokers", area = G.pack_cards, skip_materialize = true, soulable = false, key_append = "sprungfeld" }
     end,
 }
 
@@ -154,7 +154,7 @@ SMODS.Booster {
         ease_background_colour_blind(G.STATES.TAROT_PACK)
     end,
     create_card = function(self, card, i)
-        return { set = "SimpsonsTrading", area = G.pack_cards, skip_materialize = true, soulable = true, key_append = "sprungfeld" }
+        return { set = "SimpsonsTrading", area = G.pack_cards, skip_materialize = true, soulable = false, key_append = "sprungfeld" }
     end,
 }
 
@@ -186,7 +186,7 @@ SMODS.Booster {
         ease_background_colour_blind(G.STATES.TAROT_PACK)
     end,
     create_card = function(self, card, i)
-        return { set = "SimpsonsTrading", area = G.pack_cards, skip_materialize = true, soulable = true, key_append = "sprungfeld" }
+        return { set = "SimpsonsTrading", area = G.pack_cards, skip_materialize = true, soulable = false, key_append = "sprungfeld" }
     end,
 }
 
@@ -218,7 +218,7 @@ SMODS.Booster {
         ease_background_colour_blind(G.STATES.TAROT_PACK)
     end,
     create_card = function(self, card, i)
-        return { set = "SimpsonsTrading", area = G.pack_cards, skip_materialize = true, soulable = true, key_append = "sprungfeld" }
+        return { set = "SimpsonsTrading", area = G.pack_cards, skip_materialize = true, soulable = false, key_append = "sprungfeld" }
     end,
 }
 
@@ -250,6 +250,6 @@ SMODS.Booster {
         ease_background_colour_blind(G.STATES.TAROT_PACK)
     end,
     create_card = function(self, card, i)
-        return { set = "SimpsonsTrading", area = G.pack_cards, skip_materialize = true, soulable = true, key_append = "sprungfeld" }
+        return { set = "SimpsonsTrading", area = G.pack_cards, skip_materialize = true, soulable = false, key_append = "sprungfeld" }
     end,
 }

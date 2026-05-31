@@ -16,7 +16,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 0, y = 0 },
     soul_pos = { x = 0, y = 0 },
-    pools = { ['SpringfieldJokers'] = true },
+
 
     config = { extra = {  } },
 
@@ -98,7 +98,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 17, y = 1 },
     soul_pos = { x = 17, y = 3 },
-    pools = { ['SpringfieldJokers'] = true },
+
 
     config = { extra = { xmult = 1.5 } },
 
@@ -139,7 +139,7 @@ SMODS.Joker {
     atlas = 'SimpsJokers',
     pos = { x = 18, y = 1 },
     soul_pos = { x = 18, y = 3 },
-    pools = { ['SpringfieldJokers'] = true },
+
 
     config = { extra = { xmult_part = 0.7, odds = 2, tags = 3 } },
 
@@ -201,7 +201,7 @@ SMODS.Joker {
     perishable_compat = true,
     atlas = 'SimpsJokers',
     pos = { x = 19, y = 1 },
-    pools = { ['SpringfieldJokers'] = true },
+
 
     config = { extra = { xmult_gain = 0.6 } },
 
