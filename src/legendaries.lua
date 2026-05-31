@@ -182,3 +182,84 @@ SMODS.Joker {
         end
     end
 }
+
+SMODS.Joker {
+    key = 'worstbox',
+    loc_txt = {
+        name = 'Worst DVD Case of All Time',
+        text = {
+            'All scored cards become {C:attention}6s{}',
+            'after play, all played {C:attention}6s{} gain',
+            '{X:red,C:white}X#1#{} Mult when scored'
+        }
+    },
+    blueprint_compat = true,
+    rarity = 4,
+    cost = 30,
+    discovered = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    atlas = 'SimpsJokers',
+    pos = { x = 19, y = 1 },
+    pools = { ['SpringfieldJokers'] = true },
+
+    config = { extra = { xmult_gain = 0.6 } },
+
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.xmult_gain } }
+    end,
+
+    calculate = function (self, card, context)
+        if context.final_scoring_step and not context.blueprint then
+            for i = 1, #context.scoring_hand do
+                local percent = 1.15 - (i - 0.999) / (#context.scoring_hand - 0.998) * 0.3
+                if context.full_hand[i]:get_id() ~= 6 then
+                    G.E_MANAGER:add_event(Event({
+                    trigger = 'after',
+                    delay = 0.1,
+                    func = function()
+                        context.scoring_hand[i]:flip()
+                        play_sound('card1', percent)
+                        context.scoring_hand[i]:juice_up(0.3, 0.3)
+                        return true
+                    end
+                    }))
+                end
+            end
+            for i = 1, #context.scoring_hand do
+                if context.full_hand[i]:get_id() ~= 6 then
+                    G.E_MANAGER:add_event(Event({
+                    trigger = 'after',
+                    delay = 0.1,
+                    func = function()
+                        SMODS.change_base(context.scoring_hand[i], nil, '6')
+                        return true
+                    end
+                    }))
+                end
+            end
+            for i = 1, #context.scoring_hand do
+                local percent = 1.15 - (i - 0.999) / (#context.scoring_hand - 0.998) * 0.3
+                if context.scoring_hand[i]:get_id() ~= 6 then
+                    G.E_MANAGER:add_event(Event({
+                    trigger = 'after',
+                    delay = 0.1,
+                    func = function()
+                        context.scoring_hand[i]:flip()
+                        play_sound('card1', percent)
+                        context.scoring_hand[i]:juice_up(0.3, 0.3)
+                        return true
+                    end
+                    }))
+                end
+            end
+        end
+        if context.individual and context.cardarea == G.play and context.other_card:get_id() == 6 then
+            context.other_card.ability.perma_x_mult = (context.other_card.ability.perma_x_mult or 1) + card.ability.extra.xmult_gain
+            return {
+                message = 'Upgrade!',
+                colour = G.C.RED
+            }
+        end
+    end
+}

@@ -1902,7 +1902,7 @@ SMODS.Joker {
     pools = { ['SpringfieldJokers'] = true },
     hints = {'Man', 'Important', 'News'},
 
-    config = { extra = { dollars = 1, dollar_gain = 1, discards = 15, discards_remaining = 15 } },
+    config = { extra = { dollars = 1, dollar_gain = 1, discards = 25, discards_remaining = 25 } },
 
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.dollars, card.ability.extra.dollar_gain, card.ability.extra.discards, card.ability.extra.discards_remaining } }
