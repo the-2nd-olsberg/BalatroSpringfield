@@ -1,34 +1,3 @@
---[[
-SMODS.Joker {
-    key = '',
-    loc_txt = {
-        name = '',
-        text = {
-            ''
-        }
-    },
-    blueprint_compat = true,
-    rarity = 4,
-    cost = 1,
-    discovered = true,
-    eternal_compat = true,
-    perishable_compat = true,
-    atlas = 'SimpsJokers',
-    pos = { x = 0, y = 0 },
-    soul_pos = { x = 0, y = 0 },
-
-
-    config = { extra = {  } },
-
-    loc_vars = function(self, info_queue, card)
-        return { vars = {  } }
-    end,
-
-    calculate = function (self, card, context)
-    
-    end
-}
-]]
 
 SMODS.Joker {
     key = 'american_cheese',

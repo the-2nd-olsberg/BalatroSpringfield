@@ -73,6 +73,7 @@ SMODS.current_mod.calculate = function(self, context)
     end
     if context.reroll_shop then
         SIMPSON_DOLLARS_SPENT = SIMPSON_DOLLARS_SPENT + context.cost
+        print(G.GAME.consumeable_usage_total)
     end
     if context.remove_playing_cards then
         for i = 1, #context.removed do

@@ -1508,8 +1508,9 @@ SMODS.Joker {
     loc_txt = {
         name = 'Groundskeeper Willie',
         text = {
-            'Earn {C:money}$#1#{} when a',
-            '{V:1}Simpsons Trading Card{} is used',
+            'Earn {C:money}$#1#{} when',
+            'a {V:1}Simpsons Trading',
+            '{V:1}Card{} is used'
         }
     },
     blueprint_compat = true,
@@ -2316,8 +2317,8 @@ SMODS.Joker {
         text = {
             '{C:red}+#1#{} Mult',
             'Gains {C:red}+#2#{} Mult and',
-            'lose {C:money}$#3#{} at the end',
-            'of the round'
+            'lose a third of Mult as {C:money}$',
+            'at the end of the round'
         }
     },
     blueprint_compat = true,
@@ -2331,10 +2332,10 @@ SMODS.Joker {
     pools = { ['SpringfieldJokers'] = true },
     hints = {'Cars', 'Business', 'Brother'},
 
-    config = { extra = { mult = 4, mult_gain = 2, dollars = -4 } },
+    config = { extra = { mult = 4, mult_gain = 2 } },
 
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.mult, card.ability.extra.mult_gain, -card.ability.extra.dollars } }
+        return { vars = { card.ability.extra.mult, card.ability.extra.mult_gain } }
     end,
 
     calculate = function (self, card, context)
@@ -2343,9 +2344,9 @@ SMODS.Joker {
         end
         if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint then
             card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_gain
-            G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) + card.ability.extra.dollars
+            G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) + math.floor(card.ability.extra.mult/3)
             return {
-                dollars = card.ability.extra.dollars,
+                dollars = math.floor(card.ability.extra.mult/3),
                 func = function()
                     G.E_MANAGER:add_event(Event({
                         func = function()
@@ -3664,13 +3665,14 @@ SMODS.Joker {
     loc_txt = {
         name = 'Gil Gunderson',
         text = {
-            'Earn {C:money}$#1#{} when',
-            'a {V:1}Simpsons Trading',
-            '{V:1}Card{} is used'
+            'Earn {C:money}$1{} at the end of the',
+            'round for every {C:attention}#2#{} {V:1}Simpsons',
+            '{V:1}Trading Cards{} used this run',
+            '{C:inactive}(Currently{} {C:money}$#1#{}{C:inactive}){}',
         }
     },
     blueprint_compat = true,
-    rarity = 1,
+    rarity = 2,
     cost = 5,
     discovered = true,
     eternal_compat = true,
@@ -3680,18 +3682,16 @@ SMODS.Joker {
     pools = { ['SpringfieldJokers'] = true },
     hints = {'Business', 'Desperate', 'Man'},
 
-    config = { extra = { dollars = 2 } },
+    config = { extra = { division = 2 } },
 
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.dollars, colours = {HEX(G_C_SIMPSONS_TRADING_CARD)} } }
+        local dollars = math.floor((G.GAME.consumeable_usage_total and G.GAME.consumeable_usage_total.simpsonstrading or 0)/card.ability.extra.division) + 1
+        return { vars = { dollars, card.ability.extra.division, colours = {HEX(G_C_SIMPSONS_TRADING_CARD)} } }
     end,
 
-    calculate = function (self, card, context)
-        if context.using_consumeable and context.consumeable.config.center.set == 'SimpsonsTrading' then
-            return {
-                dollars = card.ability.extra.dollars
-            }
-        end
+    calc_dollar_bonus = function(self, card)
+        local dollars = math.floor((G.GAME.consumeable_usage_total and G.GAME.consumeable_usage_total.simpsonstrading or 0)/card.ability.extra.division) + 1
+        return dollars
     end
 }
 
@@ -4223,7 +4223,7 @@ SMODS.Joker {
         name = 'Old Jewish Man',
         text = {
             '{C:green}#1# in #2#{} chance of',
-            'creating {C:attention}#3#() copies of a',
+            'creating {C:attention}#3#{} copies of a',
             'card when it is {C:attention}destroyed'
         }
     },

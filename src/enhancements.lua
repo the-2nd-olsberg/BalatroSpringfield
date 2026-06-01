@@ -203,6 +203,16 @@ SMODS.Seal{
         if not SMODS.has_enhancement(card, 'm_simpson_burnt') then
             card:set_seal(SMODS.poll_seal({key = 'supercharge', guaranteed = true}), nil, true)
         end
+    end,
+    calculate = function(self, card, context)
+        if context.drawing_cards then
+            if not card.config.center.key == 'm_simpson_burnt' then
+                card:remove()
+                return {
+                    message = 'Destruction!'
+                }
+            end
+        end 
     end
 }
 
