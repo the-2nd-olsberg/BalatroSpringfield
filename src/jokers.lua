@@ -1623,7 +1623,7 @@ SMODS.Joker {
 
     calculate = function(self, card, context)
         if context.selling_card and context.card.ability and context.card.ability.set == 'Joker' and not context.blueprint then
-            card.ability.extra.chips = card.ability.extra.mult + card.ability.extra.mult_gain
+            card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_gain
             return {
                 message = 'Upgrade!'
             }
