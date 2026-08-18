@@ -54,6 +54,7 @@ assert(SMODS.load_file("src/boosters.lua"))()
 
 SIMPSON_DOLLARS_SPENT = 0
 SIMPSON_CARDS_DESTROYED_RUN = 0
+SIMPSON_CONSUMEABLES_USED = 0
 SIMPSONS_FOOL_VARIABLE = nil
 G_C_SIMPSONS_TRADING_CARD = "e1841d"
 
@@ -63,6 +64,7 @@ function Game:start_run(args)
     SIMPSON_DOLLARS_SPENT = 0
     SIMPSON_CARDS_DESTROYED_RUN = 0
     SIMPSONS_FOOL_VARIABLE = nil
+    SIMPSON_CONSUMEABLES_USED = 0
     return g
 end
 
@@ -80,7 +82,11 @@ SMODS.current_mod.calculate = function(self, context)
             SIMPSON_CARDS_DESTROYED_RUN = SIMPSON_CARDS_DESTROYED_RUN + 1
         end
     end
-    if context.using_consumeable and context.consumeable.config.center.set == 'SimpsonsTrading' and context.consumeable.config.center.key ~= 'c_simpson_doh' then
-        SIMPSONS_FOOL_VARIABLE = context.consumeable.config.center.key
+    if context.using_consumeable then
+      SIMPSON_CONSUMEABLES_USED = SIMPSON_CONSUMEABLES_USED + 1
+      print(SIMPSON_CONSUMEABLES_USED)
+      if context.consumeable.config.center.set == 'SimpsonsTrading' and context.consumeable.config.center.key ~= 'c_simpson_doh' then
+          SIMPSONS_FOOL_VARIABLE = context.consumeable.config.center.key
+      end
     end
 end

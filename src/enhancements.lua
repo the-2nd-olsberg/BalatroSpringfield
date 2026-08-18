@@ -64,8 +64,8 @@ SMODS.Enhancement {
             }
         end
     end
-}
---67!
+} --67!
+
 SMODS.Enhancement {
     key = 'green',
     loc_txt = {
@@ -191,28 +191,21 @@ SMODS.Seal{
         label = 'Flame Seal',
         name = 'Flame Seal',
         text = { 
-            'If this Seal is NOT',
-            'on a {C:attention}Burnt{} Card, then',
-            'card is destroyed'
+            '{X:red,C:white}X#1#{} Mult'
         }
     },
     atlas = 'SimpsEnhance',
     pos = { x = 4, y = 1 },
-    config = { },
-    set_seal = function(self, card, from_debuff)
-        if not SMODS.has_enhancement(card, 'm_simpson_burnt') then
-            card:set_seal(SMODS.poll_seal({key = 'supercharge', guaranteed = true}), nil, true)
-        end
+    config = {  xmult = 1.5 },
+    loc_vars = function(self, info_queue)
+        return { vars = { self.config.xmult } }
     end,
     calculate = function(self, card, context)
-        if context.drawing_cards then
-            if not card.config.center.key == 'm_simpson_burnt' then
-                card:remove()
-                return {
-                    message = 'Destruction!'
-                }
-            end
-        end 
+        if context.main_scoring and context.cardarea == G.play then
+            return {
+                xmult = card.ability.extra.xmult
+            }
+        end
     end
 }
 
@@ -226,16 +219,11 @@ SMODS.Enhancement {
             'when discarded',
             '{C:green}#1# in #2#{} chance to destroy card',
             'after all scoring is finished',
-            ' ',
-            'If this card does NOT',
-            'have a {V:1}Flame{} Seal, then',
-            'card is destroyed',
-            '{s:0.7}{C:inactive}Seal is applied with Enhancement'
         }
     },
     atlas = 'SimpsEnhance',
     pos = { x = 2, y = 1 },
-    config = { extra = { xmult = 3, odds = 4, xmult_loss = 0.4 } },
+    config = { extra = { xmult = 2.8, odds = 4, xmult_loss = 0.4 } },
     loc_vars = function(self, info_queue, card)
         local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'fire')
         return { vars = { numerator, denominator, card.ability.extra.xmult, card.ability.extra.xmult_loss, colours = { HEX('ff8b00') } } }
@@ -249,16 +237,9 @@ SMODS.Enhancement {
             }
         end
         if context.main_scoring and context.cardarea == G.play then
-            if not card.seal or (card.seal and card.seal ~= 'simpson_flame') then
-                card:remove()
-                return {
-                    message = 'Destruction!'
-                }
-            else
-                return {
-                    xmult = card.ability.extra.xmult
-                }
-            end
+            return {
+                xmult = card.ability.extra.xmult
+            }
         end
         if context.discard and context.other_card == card then
             if not card.seal or (card.seal and card.seal ~= 'simpson_flame') then
@@ -280,14 +261,6 @@ SMODS.Enhancement {
                 end
             end
         end
-        if context.drawing_cards then
-            if not card.seal or (card.seal and card.seal ~= 'simpson_flame') then
-                card:remove()
-                return {
-                    message = 'Destruction!'
-                }
-            end
-        end 
     end,
 
     set_ability = function(self, card, from_debuff)
