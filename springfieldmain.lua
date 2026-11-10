@@ -47,6 +47,7 @@ SMODS.Atlas {
 }
 
 assert(SMODS.load_file("src/jokers.lua"))()
+assert(SMODS.load_file("src/jokers_dup.lua"))()
 assert(SMODS.load_file("src/legendaries.lua"))()
 assert(SMODS.load_file("src/enhancements.lua"))()
 assert(SMODS.load_file("src/tradingcards.lua"))()
@@ -57,6 +58,7 @@ SIMPSON_CARDS_DESTROYED_RUN = 0
 SIMPSON_CONSUMEABLES_USED = 0
 SIMPSONS_FOOL_VARIABLE = nil
 G_C_SIMPSONS_TRADING_CARD = "e1841d"
+SIMPSONS_KANG_SUIT = 'Hearts'
 
 local oldstartrun = Game.start_run
 function Game:start_run(args)
@@ -65,6 +67,7 @@ function Game:start_run(args)
     SIMPSON_CARDS_DESTROYED_RUN = 0
     SIMPSONS_FOOL_VARIABLE = nil
     SIMPSON_CONSUMEABLES_USED = 0
+    SIMPSONS_KANG_SUIT = 'Hearts'
     return g
 end
 
@@ -88,5 +91,8 @@ SMODS.current_mod.calculate = function(self, context)
       if context.consumeable.config.center.set == 'SimpsonsTrading' and context.consumeable.config.center.key ~= 'c_simpson_doh' then
           SIMPSONS_FOOL_VARIABLE = context.consumeable.config.center.key
       end
+    end
+    if context.end_of_round and context.game_over == false and context.main_eval then
+      SIMPSONS_KANG_SUIT = pseudorandom_element(SMODS.Suits, 'kang').key
     end
 end

@@ -1,3 +1,95 @@
+SMODS.Joker {
+    key = 'who_shot',
+    loc_txt = {
+        name = 'Who Shot Mr. Burns?',
+        text = {
+            'Perpetrator: {C:attention}#1#{}',
+            'Hint: {C:attention}#2#{}',
+            'Hint: {C:attention}#3#{}',
+            'Hint: {C:attention}#4#{}',
+            '---',
+            'Find the perp for {X:red,C:white}X#5#{} Mult',
+            '{C:attention}+#6#{} card slot available in shop',
+            '{C:inactive}Hints given at the end',
+            '{C:inactive}of a Boss Blind'
+        }
+    },
+    blueprint_compat = true,
+    rarity = 2,
+    cost = 6,
+    discovered = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    atlas = 'SimpsJokers',
+    pos = { x = 0, y = 0 },
+    pools = { ['SpringfieldJokers'] = true },
+
+    config = { extra = { perp = '???', hints = {'???', '???', '???'}, xmult = 3, real_perp = nil, found = false, real_hints = {}, shop_size = 1 } },
+
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.perp, card.ability.extra.hints[1], card.ability.extra.hints[2], card.ability.extra.hints[3], card.ability.extra.xmult, card.ability.extra.shop_size } }
+    end,
+
+    calculate = function (self, card, context)
+        if context.joker_main and card.ability.extra.found then
+            return { xmult = card.ability.extra.xmult }
+        end
+        if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint then
+            local done = false
+            if G.GAME.blind.boss and card.ability.extra.found == false and done == false then
+                for i = 1, #card.ability.extra.hints do
+                    if card.ability.extra.hints[i] == '???' then
+                        card.ability.extra.hints[i] = card.ability.extra.real_hints[i]
+                        return {
+                            message = 'Update!'
+                        }
+                    end
+                end
+            end
+        end
+    end,
+
+    add_to_deck = function(self, card, from_debuff)
+        if card.ability.extra.real_perp == nil then
+            local jokers = {}
+            local rarities = {'Common', 'Common', 'Common', 'Common', 'Uncommon', 'Uncommon','Uncommon', 'Rare' }
+            local rarity = pseudorandom_element(rarities, 'mrbruns')
+            for i = 1, #SMODS.get_clean_pool('Joker', rarity) do
+                if string.find(SMODS.get_clean_pool('Joker', rarity)[i], "j_simpson_char") then
+                    jokers[#jokers + 1] = SMODS.get_clean_pool('Joker', rarity)[i]
+                end
+            end
+            card.ability.extra.real_perp = pseudorandom_element(jokers, 'mrbruns')
+            print(card.ability.extra.real_perp)
+            card.ability.extra.real_hints = G.P_CENTERS[card.ability.extra.real_perp].hints
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    change_shop_size(card.ability.extra.shop_size)
+                    return true
+                end
+            }))
+        end
+    end,
+
+    remove_from_deck = function(self, card, from_debuff)
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                change_shop_size(-card.ability.extra.shop_size)
+                return true
+            end
+        }))
+    end,
+
+    update = function(self, card, dt)
+        if card.ability.extra.found == false and next(SMODS.find_card(card.ability.extra.real_perp)) then
+            card.ability.extra.found = true
+            card.ability.extra.perp = G.P_CENTERS[card.ability.extra.real_perp].loc_txt.name
+            SMODS.calculate_effect({message = "Found them!"}, card)
+            print('Found it!')
+        end
+    end
+}
+--penis
 
 SMODS.Joker {
     key = 'american_cheese',

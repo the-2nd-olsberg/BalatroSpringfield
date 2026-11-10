@@ -5374,7 +5374,8 @@ SMODS.Joker {
         name = 'Ian',
         text = {
             '{C:money}$#1#{} for every {C:attention}#2#%{} of',
-            '{C:chips}chips{} over the {C:attention}blind requirement{}'
+            '{C:chips}chips{} over the {C:attention}blind requirement{}',
+            '{C:inactive}(Max of {C:money}$10{}{C:inactive}){}'
         }
     },
     blueprint_compat = false,
@@ -5387,7 +5388,7 @@ SMODS.Joker {
     pos = { x = 12, y = 5 },
     pools = { ['SpringfieldJokers'] = true },
 
-    config = { extra = { dollars = 1, percent = 10 } },
+    config = { extra = { dollars = 1, percent = 20, true_dollars = 0 } },
 
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.dollars, card.ability.extra.percent } }
@@ -5395,14 +5396,17 @@ SMODS.Joker {
 
     calculate = function (self, card, context)
         if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint then
-            local ten_percent = math.floor(G.GAME.blind.chips / (100/card.ability.extra.percent))
-            local difference = hand_chips - G.GAME.blind.chips
-            card.ability.extra.dollars = math.floor(difference / ten_percent)
+            local difference = G.GAME.chips - G.GAME.blind.chips
+            local percentage = G.GAME.blind.chips * (card.ability.extra.percent / 100)
+            card.ability.extra.true_dollars = (math.floor(difference / percentage)) * card.ability.extra.dollars
+            if card.ability.extra.true_dollars > 10 then
+                card.ability.extra.true_dollars = 10
+            end
         end
     end,
 
     calc_dollar_bonus = function(self, card)
-        return card.ability.extra.dollars
+        return card.ability.extra.true_dollars
     end
 }
 
@@ -5612,20 +5616,17 @@ SMODS.Joker {
     pools = { ['SpringfieldJokers'] = true },
     hints = {'Alien', 'Green', 'Evil'},
 
-    config = { extra = { suit = 'Hearts', repetitions = 1 } },
+    config = { extra = { repetitions = 1 } },
 
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.suit, colours = { G.C.SUITS[card.ability.extra.suit] } } }
+        return { vars = { SIMPSONS_KANG_SUIT, colours = { G.C.SUITS[SIMPSONS_KANG_SUIT] } } }
     end,
 
     calculate = function (self, card, context)
-        if context.repetition and context.other_card:is_suit(card.ability.extra.suit) then
+        if context.repetition and context.other_card:is_suit(SIMPSONS_KANG_SUIT) then
             return {
                 repetitions = card.ability.extra.repetitions
             }
-        end
-        if context.final_scoring_step and not context.blueprint then
-            card.ability.extra.suit = pseudorandom_element(SMODS.Suits, 'kang').key
         end
     end
 }
@@ -5808,97 +5809,3 @@ SMODS.Joker {
     end
 }
 ]]
-
-
-
-SMODS.Joker {
-    key = 'who_shot',
-    loc_txt = {
-        name = 'Who Shot Mr. Burns?',
-        text = {
-            'Perpetrator: {C:attention}#1#{}',
-            'Hint: {C:attention}#2#{}',
-            'Hint: {C:attention}#3#{}',
-            'Hint: {C:attention}#4#{}',
-            '---',
-            'Find the perp for {X:red,C:white}X#5#{} Mult',
-            '{C:attention}+#6#{} card slot available in shop',
-            '{C:inactive}Hints given at the end',
-            '{C:inactive}of a Boss Blind'
-        }
-    },
-    blueprint_compat = true,
-    rarity = 2,
-    cost = 6,
-    discovered = true,
-    eternal_compat = true,
-    perishable_compat = true,
-    atlas = 'SimpsJokers',
-    pos = { x = 0, y = 0 },
-    pools = { ['SpringfieldJokers'] = true },
-
-    config = { extra = { perp = '???', hints = {'???', '???', '???'}, xmult = 3, real_perp = nil, found = false, real_hints = {}, shop_size = 1 } },
-
-    loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.perp, card.ability.extra.hints[1], card.ability.extra.hints[2], card.ability.extra.hints[3], card.ability.extra.xmult, card.ability.extra.shop_size } }
-    end,
-
-    calculate = function (self, card, context)
-        if context.joker_main and card.ability.extra.found then
-            return { xmult = card.ability.extra.xmult }
-        end
-        if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint then
-            local done = false
-            if G.GAME.blind.boss and card.ability.extra.found == false and done == false then
-                for i = 1, #card.ability.extra.hints do
-                    if card.ability.extra.hints[i] == '???' then
-                        card.ability.extra.hints[i] = card.ability.extra.real_hints[i]
-                        return {
-                            message = 'Update!'
-                        }
-                    end
-                end
-            end
-        end
-    end,
-
-    add_to_deck = function(self, card, from_debuff)
-        if card.ability.extra.real_perp == nil then
-            local jokers = {}
-            local rarities = {'Common', 'Common', 'Common', 'Common', 'Uncommon', 'Uncommon','Uncommon', 'Rare' }
-            local rarity = pseudorandom_element(rarities, 'mrbruns')
-            for i = 1, #SMODS.get_clean_pool('Joker', rarity) do
-                if string.find(SMODS.get_clean_pool('Joker', rarity)[i], "j_simpson_char") then
-                    jokers[#jokers + 1] = SMODS.get_clean_pool('Joker', rarity)[i]
-                end
-            end
-            card.ability.extra.real_perp = pseudorandom_element(jokers, 'mrbruns')
-            print(card.ability.extra.real_perp)
-            card.ability.extra.real_hints = G.P_CENTERS[card.ability.extra.real_perp].hints
-            G.E_MANAGER:add_event(Event({
-                func = function()
-                    change_shop_size(card.ability.extra.shop_size)
-                    return true
-                end
-            }))
-        end
-    end,
-
-    remove_from_deck = function(self, card, from_debuff)
-        G.E_MANAGER:add_event(Event({
-            func = function()
-                change_shop_size(-card.ability.extra.shop_size)
-                return true
-            end
-        }))
-    end,
-
-    update = function(self, card, dt)
-        if card.ability.extra.found == false and next(SMODS.find_card(card.ability.extra.real_perp)) then
-            card.ability.extra.found = true
-            card.ability.extra.perp = G.P_CENTERS[card.ability.extra.real_perp].loc_txt.name
-            SMODS.calculate_effect({message = "Found them!"}, card)
-            print('Found it!')
-        end
-    end
-}
