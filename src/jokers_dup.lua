@@ -1041,7 +1041,7 @@ SMODS.Joker {
         if context.using_consumeable and not context.blueprint and context.consumeable.ability.set == ("Tarot") then
             card.ability.extra.counter = card.ability.extra.counter + 1
             if card.ability.extra.counter == 2 then
-                card.ability.extra.xmult = card.ability.extra.xmult - card.ability.extra.xmult_gain
+                card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_gain
                 card.ability.extra.counter = 0
                 return {
                     message = "Upgrade!",
