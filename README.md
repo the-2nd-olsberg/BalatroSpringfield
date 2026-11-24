@@ -1,7 +1,7 @@
 This is the Balatro Springfield Mod for Balatro, it is based on the underground indie cartoon "The Simpsons", maybe you've heard of it.
 I'm planning on it being a rather large mod when I'm done with it.
 
-Contains over 120 Jokers, 6 enhancements, and new consumables as of release 0.6.5! More are coming and more cards of other aspects also.
+Contains over 150 Jokers, 7 enhancements, and 13 new consumables as of release 0.8.1! More are coming and more cards of other aspects also.
 
 Also contains the start of a Texture Pack that loads if you have the Malverk Mod installed, which you can find here: https://github.com/Eremel/Malverk
 
