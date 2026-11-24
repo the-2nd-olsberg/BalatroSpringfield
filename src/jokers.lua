@@ -653,7 +653,7 @@ SMODS.Joker {
     loc_txt = {
         name = 'Ned Flanders',
         text = {
-            '{C:green}#1# in #2#{} chance to enchance the {C:attention}2{}',
+            '{C:green,E:1}#1# in #2#{} chance to enchance the {C:attention}2{}',
             'last scored cards when {C:attention}5{} cards are played'
         }
     },
@@ -1045,7 +1045,7 @@ SMODS.Joker {
     loc_txt = {
         name = 'Dr. Hibbert',
         text = {
-            '{C:green}#1# in #2#{} chance to give',
+            '{C:green,E:1}#1# in #2#{} chance to give',
             'each played card a random {C:attention}Seal'
         }
     },
@@ -1241,7 +1241,7 @@ SMODS.Joker {
     loc_txt = {
         name = 'Superintendent Chalmers',
         text = {
-            '{C:green}#1# in #2#{} chance for each played',
+            '{C:green,E:1}#1# in #2#{} chance for each played',
             '{V:1}Club{} to give {X:red,C:white}X#3#{} Mult'
         }
     },
@@ -1331,7 +1331,9 @@ SMODS.Joker {
         if context.joker_main then
             local ranks_add = 0
             for i = 1, #context.scoring_hand do
-                ranks_add = ranks_add + context.scoring_hand[i]:get_id()
+                if not SMODS.has_no_rank(context.scoring_hand[i]) then
+                    ranks_add = ranks_add + context.scoring_hand[i]:get_id()
+                end
             end
             return {
                 chips = ranks_add
@@ -1418,7 +1420,7 @@ SMODS.Joker {
                     prime = false
                 end
             end
-            if prime then
+            if prime or SMODS.has_no_rank(context.other_card) then
                 return {
                     mult = card.ability.extra.mult
                 }
@@ -1643,7 +1645,7 @@ SMODS.Joker {
         text = {
             'All items in the {C:money}shop{}',
             'cost {C:attention}#3#%{} less',
-            '{C:green}#1# in #2#{} chance for every',
+            '{C:green,E:1}#1# in #2#{} chance for every',
             'purchased card to be {C:attention}destroyed'
         }
     },
@@ -1756,7 +1758,7 @@ SMODS.Joker {
     loc_txt = {
         name = 'Fat Tony',
         text = {
-            '{C:green}#1# in #2#{} chance of destroying each',
+            '{C:green,E:1}#1# in #2#{} chance of destroying each',
             '{C:attention}played card{} and giving {C:money}$#3#',
         }
     },
@@ -2105,7 +2107,7 @@ SMODS.Joker {
             '{C:red}+#3#{} Mult',
             'Gains between {C:red}+#4#{} and {C:red}+#5#{} Mult',
             'at the end of the round',
-            '{C:green}#1# in #2#{} chance to die',
+            '{C:green,E:1}#1# in #2#{} chance to die',
             'at the end of a {C:attention}Boss blind{}'
         }
     },
@@ -2882,7 +2884,7 @@ SMODS.Joker {
         text = {
             'Earn {C:money}$#3#{} at the',
             'end of the round',
-            '{C:green}#1# in #2#{} chance to',
+            '{C:green,E:1}#1# in #2#{} chance to',
             'gain {C:money}$#4#{} when a card',
             'is {C:attention}destroyed{}'
         }
@@ -2929,7 +2931,7 @@ SMODS.Joker {
         name = 'Poochie',
         text = {
             '{C:red}+#3#{} Mult',
-            '{C:green}#1# in #2#{} chance to',
+            '{C:green,E:1}#1# in #2#{} chance to',
             'go back to his {C:attention}home planet',
             'when starting the {C:attention}shop'
 
@@ -2987,8 +2989,10 @@ SMODS.Joker {
     loc_txt = {
         name = 'Duff Man',
         text = {
-            'Gains {C:red}+#1#{} Mult when',
-            'a {C:red}Duff Card{} is used',
+            'Gains {C:red}+#1#{} Mult when a',
+            '{V:1}Simpsons Trading Card{} is used',
+            'or {C:red}+#3#{} Mult when a {C:red}Duff{}',
+            '{C:red}Card{} is used',
             '{C:inactive}(Currently{}{C:red} +#2#{} {C:inactive}Mult){}',
         }
     },
@@ -3003,19 +3007,27 @@ SMODS.Joker {
     pools = { ['SpringfieldJokers'] = true },
     hints = {'Cool', 'Mascot', 'Man'},
 
-    config = { extra = { mult = 0, mult_gain = 3 } },
+    config = { extra = { mult = 0, mult_gain = 1, mult_gain_duff = 3 } },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS['c_simpson_duff']
-        return { vars = { card.ability.extra.mult_gain, card.ability.extra.mult } }
+        return { vars = { card.ability.extra.mult_gain, card.ability.extra.mult, card.ability.extra.mult_gain_duff, colours = {HEX(G_C_SIMPSONS_TRADING_CARD)} } }
     end,
 
     calculate = function(self, card, context)
-        if context.using_consumeable and context.consumeable.config.center.set == 'SimpsonsTrading' and context.consumeable.config.center.key == 'c_simpson_duff' and not context.blueprint then
-            card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_gain
-            return {
-                message = 'Upgrade!',
-                colour = G.C.RED
-            }
+        if context.using_consumeable and context.consumeable.config.center.set == 'SimpsonsTrading' and not context.blueprint then
+            if context.consumeable.config.center.key == 'c_simpson_duff' then
+                card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_gain_duff
+                return {
+                    message = 'Upgrade!',
+                    colour = G.C.RED
+                }
+            else
+                card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_gain
+                return {
+                    message = 'Upgrade!',
+                    colour = G.C.RED
+                }
+            end
         end
         if context.joker_main then
             return {
@@ -3702,7 +3714,7 @@ SMODS.Joker {
         text = {
             'Earn {C:money}$#3#{} at the',
             'end of the round',
-            '{C:green}#1# in #2#{} chance',
+            '{C:green,E:1}#1# in #2#{} chance',
             'earn {C:money}$#4#{} at the',
             'end of the round'
         }
@@ -3739,7 +3751,7 @@ SMODS.Joker {
     loc_txt = {
         name = 'Jacqueline Bouvier',
         text = {
-            '{C:green}#1# in #2#{} chance for each played',
+            '{C:green,E:1}#1# in #2#{} chance for each played',
             '{C:attention}face{} card to give {X:red,C:white}X#3#{} Mult'
         }
     },
@@ -4222,7 +4234,7 @@ SMODS.Joker {
     loc_txt = {
         name = 'Old Jewish Man',
         text = {
-            '{C:green}#1# in #2#{} chance of',
+            '{C:green,E:1}#1# in #2#{} chance of',
             'creating {C:attention}#3#{} copies of a',
             'card when it is {C:attention}destroyed'
         }
@@ -4288,7 +4300,7 @@ SMODS.Joker {
     loc_txt = {
         name = 'Jebidiah Springfield',
         text = {
-            '{C:green}#1# in #2#{} chance to',
+            '{C:green,E:1}#1# in #2#{} chance to',
             'level up hand {C:attention}above{} and {C:attention}below{}',
             'the hand played'
         }
@@ -4397,6 +4409,15 @@ SMODS.Joker {
                 chips = card.ability.extra.chips
             }
         end
+    end,
+
+    in_pool = function(self, args)
+        for _, playing_card in ipairs(G.playing_cards or {}) do
+            if SMODS.has_enhancement(playing_card, 'm_mult') then
+                return true
+            end
+        end
+        return false
     end
 }
 
@@ -4458,7 +4479,7 @@ SMODS.Joker {
     loc_txt = {
         name = 'Lyle Lanley',
         text = {
-            '{C:green}#1# in #2#{} chance to destroy each',
+            '{C:green,E:1}#1# in #2#{} chance to destroy each',
             'purchased {C:purple}Tarot{} or {C:planet}Planet{} Card',
             'and gain {X:red,C:white}X#3#{} Mult',
             '{C:inactive}(Currently{} {X:red,C:white}X#4#{} {C:inactive}Mult){}',
@@ -4506,7 +4527,7 @@ SMODS.Joker {
     loc_txt = {
         name = 'Russ Cargill',
         text = {
-            '{C:green}#1# in #2#{} chance for',
+            '{C:green,E:1}#1# in #2#{} chance for',
             'each played {C:attention}unsealed{} card to',
             'be given a {V:1}Pollution{} Seal after play',
             'Retrigger all cards with a {V:1}Pollution{} Seal'
@@ -4920,7 +4941,7 @@ SMODS.Joker {
     loc_txt = {
         name = 'Luann Van Houten',
         text = {
-            '{C:green}#1# in #2#{} chance to',
+            '{C:green,E:1}#1# in #2#{} chance to',
             'create an {C:uncommon}Uncommon{} Tag',
             'at the end of the round'
         }
@@ -4963,7 +4984,7 @@ SMODS.Joker {
     loc_txt = {
         name = 'Mike Wegman',
         text = {
-            '{C:green}#1# in #2#{} chance to destroy',
+            '{C:green,E:1}#1# in #2#{} chance to destroy',
             'each card held in hand and',
             'gain {X:red,C:white}X#3#{} Mult for each',
             'card destroyed',
@@ -5111,7 +5132,7 @@ SMODS.Joker {
     loc_txt = {
         name = 'Dr. Zaius',
         text = {
-            '{C:green}#1# in #2#{} chance to retrigger',
+            '{C:green,E:1}#1# in #2#{} chance to retrigger',
             'each played {C:attention}face{} card {C:attention}#3#{} times'
         }
     },
@@ -5591,6 +5612,14 @@ SMODS.Joker {
         if context.other_card and context.individual and context.cardarea == G.play and SMODS.has_enhancement(context.other_card, 'm_bonus') then
             return { dollars = card.ability.extra.dollars }
         end
+    end,
+    in_pool = function(self, args)
+        for _, playing_card in ipairs(G.playing_cards or {}) do
+            if SMODS.has_enhancement(playing_card, 'm_bonus') then
+                return true
+            end
+        end
+        return false
     end
 }
 
@@ -5745,8 +5774,8 @@ SMODS.Joker {
         }
     },
     blueprint_compat = true,
-    rarity = 1,
-    cost = 5,
+    rarity = 2,
+    cost = 6,
     discovered = true,
     eternal_compat = true,
     perishable_compat = true,
